@@ -1,741 +1,459 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Varshika Jain | Data Scientist</title>
+    <title>Varshika Jain | Digital Alchemist</title>
     
-    <!-- Tailwind CSS -->
+    <!-- One-Line Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        accent: '#00f3ff',
-                        'accent-glow': 'rgba(0, 243, 255, 0.6)',
-                        secondary: '#bc13fe',
-                        'bg-deep': '#020010',
+                        dark: '#050511',
+                        surface: '#0F0F1E',
+                        primary: '#6366f1',    /* Indigo */
+                        secondary: '#ec4899',  /* Pink */
+                        accent: '#22d3ee',     /* Cyan */
                     },
                     fontFamily: {
-                        syncopate: ['Syncopate', 'sans-serif'],
-                        tech: ['Share Tech Mono', 'monospace'],
-                        grotesk: ['Space Grotesk', 'sans-serif'],
+                        sans: ['Outfit', 'sans-serif'],
+                        display: ['Clash Display', 'sans-serif'],
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
                     }
                 }
             }
         }
     </script>
     
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syncopate:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <!-- Fonts: Outfit (Clean) & Clash Display (Bold) -->
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,400,500,600,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
     
-    <!-- Lucide Icons -->
+    <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- Three.js & GSAP -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- GSAP for smooth magic -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <style>
-        :root {
-            --accent: #00f3ff;
-            --secondary: #bc13fe;
-            --bg-deep: #020010;
-        }
-
         body {
-            margin: 0;
-            background-color: var(--bg-deep);
-            color: white;
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Outfit', sans-serif;
+            background-color: #050511;
+            color: #ffffff;
             overflow-x: hidden;
-            overscroll-behavior: none;
-            cursor: default;
         }
 
-        /* Fixed Canvas for 3D Background */
-        #webgl-container {
+        .font-display {
+            font-family: 'Clash Display', sans-serif;
+        }
+
+        /* Fluid Gradient Background */
+        .gradient-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100vh;
             z-index: -1;
-            opacity: 0;
-            transition: opacity 1.5s ease-in-out;
+            background: #050511;
+            overflow: hidden;
         }
-
-        /* Typography */
-        .hero-text {
-            text-shadow: 0 0 30px rgba(0, 243, 255, 0.4);
-            letter-spacing: -2px;
-        }
-
-        /* Glitch Effect */
-        .glitch-wrapper {
-            position: relative;
-            display: inline-block;
-        }
-        .glitch-text {
-            position: relative;
-            z-index: 1;
-        }
-        .glitch-text::before, .glitch-text::after {
-            content: attr(data-text);
+        .gradient-blob {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.8;
-        }
-        .glitch-text::before {
-            color: var(--secondary);
-            z-index: -1;
-            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
-            transform: translate(-2px, -2px);
-            animation: glitch-anim-1 2s infinite linear alternate-reverse;
-        }
-        .glitch-text::after {
-            color: var(--accent);
-            z-index: -2;
-            clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
-            transform: translate(2px, 2px);
-            animation: glitch-anim-2 2s infinite linear alternate-reverse;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: blob 10s infinite alternate;
         }
 
-        @keyframes glitch-anim-1 {
-            0% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-            100% { transform: translate(0); }
-        }
-        @keyframes glitch-anim-2 {
-            0% { transform: translate(0); }
-            20% { transform: translate(2px, -2px); }
-            40% { transform: translate(2px, 2px); }
-            60% { transform: translate(-2px, -2px); }
-            80% { transform: translate(-2px, 2px); }
-            100% { transform: translate(0); }
-        }
-
-        /* Holographic Glass Cards */
-        .glass-panel {
-            background: rgba(10, 15, 30, 0.6);
+        /* Glassmorphism Utilities */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(0, 243, 255, 0.1);
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-            clip-path: polygon(
-                0 0, 
-                100% 0, 
-                100% 85%, 
-                95% 100%, 
-                0 100%
-            );
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(99, 102, 241, 0.3); /* Primary border on hover */
+            transform: translateY(-4px);
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
         }
 
-        .glass-panel:hover {
-            border-color: var(--accent);
-            box-shadow: 0 0 40px rgba(0, 243, 255, 0.2), inset 0 0 20px rgba(0, 243, 255, 0.05);
-            transform: translateY(-5px) scale(1.01);
-            background: rgba(0, 243, 255, 0.03);
+        /* Mobile Menu */
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .mobile-menu.open {
+            transform: translateX(0);
         }
 
-        /* HUD Elements */
-        .hud-corner {
-            position: absolute;
-            width: 15px;
-            height: 15px;
-            border: 2px solid rgba(0, 243, 255, 0.3);
-            transition: all 0.3s ease;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-        .hud-tl { top: 0; left: 0; border-right: 0; border-bottom: 0; }
-        .hud-tr { top: 0; right: 0; border-left: 0; border-bottom: 0; }
-        .hud-bl { bottom: 0; left: 0; border-right: 0; border-top: 0; }
-        .hud-br { bottom: 0; right: 0; border-left: 0; border-top: 0; }
-
-        .glass-panel:hover .hud-corner {
-            width: 30px;
-            height: 30px;
-            border-color: var(--accent);
+        ::-webkit-scrollbar-track {
+            background: #050511;
         }
-
-        /* Scroll Progress */
-        .warp-bar {
-            position: fixed;
-            right: 0;
-            top: 0;
-            width: 3px;
-            height: 0%;
-            background: linear-gradient(to bottom, var(--accent), var(--secondary));
-            z-index: 100;
-            box-shadow: -2px 0 10px var(--accent);
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
         }
-
-        /* Scanline Overlay */
-        .scanlines {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                to bottom,
-                rgba(255,255,255,0),
-                rgba(255,255,255,0) 50%,
-                rgba(0,0,0,0.2) 50%,
-                rgba(0,0,0,0.2)
-            );
-            background-size: 100% 3px;
-            pointer-events: none;
-            z-index: 90;
-            opacity: 0.15;
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6366f1;
         }
-
-        /* Selection */
-        ::selection {
-            background: var(--accent);
-            color: black;
-        }
-
-        /* Loader */
-        #loader {
-            position: fixed;
-            inset: 0;
-            background: #020010;
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-        .loader-ring {
-            width: 80px;
-            height: 80px;
-            border: 2px solid transparent;
-            border-top: 2px solid var(--accent);
-            border-right: 2px solid var(--secondary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        .blinking-text {
-            animation: blink 1s step-end infinite;
-        }
-        @keyframes blink { 50% { opacity: 0; } }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body>
+<body class="antialiased selection:bg-primary selection:text-white">
 
-    <!-- Loading Screen -->
-    <div id="loader">
-        <div class="loader-ring mb-6"></div>
-        <div class="font-tech text-accent tracking-[0.3em] text-sm blinking-text">INITIALIZING SYSTEM...</div>
+    <!-- Fluid Background -->
+    <div class="gradient-bg">
+        <div class="gradient-blob bg-primary w-96 h-96 top-0 -left-20 animate-blob"></div>
+        <div class="gradient-blob bg-secondary w-96 h-96 bottom-0 -right-20 animate-blob" style="animation-delay: 2s"></div>
+        <div class="gradient-blob bg-accent w-80 h-80 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-blob" style="animation-delay: 4s"></div>
     </div>
 
-    <!-- 3D Canvas -->
-    <div id="webgl-container"></div>
-    
-    <!-- UI Overlays -->
-    <div class="scanlines"></div>
-    <div class="warp-bar"></div>
-
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 px-6 py-6 flex justify-between items-center backdrop-blur-md bg-black/10 border-b border-white/5 transition-all duration-300 hover:bg-black/30">
-        <div class="font-syncopate font-bold text-xl tracking-tighter flex items-center gap-2 group cursor-pointer select-none">
-            <div class="w-2 h-2 bg-accent rotate-45 group-hover:rotate-180 transition-transform duration-700"></div>
-            <span>V<span class="text-accent">29</span></span>
-        </div>
-        
-        <div class="hidden md:flex gap-12 font-tech text-xs tracking-[0.2em] text-gray-500">
-            <a href="#section-home" class="hover:text-accent hover:shadow-[0_0_15px_var(--accent)] transition-all duration-300 px-2 py-1">/ HOME</a>
-            <a href="#section-about" class="hover:text-secondary hover:shadow-[0_0_15px_var(--secondary)] transition-all duration-300 px-2 py-1">/ STATS</a>
-            <a href="#section-projects" class="hover:text-green-400 hover:shadow-[0_0_15px_#4ade80] transition-all duration-300 px-2 py-1">/ MISSIONS</a>
-            <a href="#section-contact" class="hover:text-white transition-all duration-300 px-2 py-1 border border-transparent hover:border-accent/30 hover:bg-accent/5">INIT_CONTACT</a>
+    <nav class="fixed top-0 w-full z-50 px-6 py-4 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="#" class="font-display text-2xl font-bold tracking-wider z-50 relative">V<span class="text-primary">29</span>.</a>
+            
+            <!-- Desktop Nav -->
+            <div class="hidden md:flex items-center gap-8 glass-card px-8 py-3 rounded-full">
+                <a href="#about" class="text-sm font-medium hover:text-primary transition-colors">About</a>
+                <a href="#stack" class="text-sm font-medium hover:text-primary transition-colors">Stack</a>
+                <a href="#projects" class="text-sm font-medium hover:text-primary transition-colors">Projects</a>
+                <a href="#contact" class="px-5 py-2 bg-white text-black text-sm font-bold rounded-full hover:bg-gray-200 transition-colors">Let's Talk</a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden z-50 relative" id="menu-btn">
+                <i data-lucide="menu" class="w-8 h-8"></i>
+            </button>
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <main class="relative z-10">
+    <!-- Full Screen Mobile Menu -->
+    <div class="mobile-menu fixed inset-0 bg-dark z-40 flex flex-col items-center justify-center gap-8 text-2xl font-display" id="mobile-menu">
+        <a href="#about" class="hover:text-primary" onclick="toggleMenu()">About</a>
+        <a href="#stack" class="hover:text-primary" onclick="toggleMenu()">Stack</a>
+        <a href="#projects" class="hover:text-primary" onclick="toggleMenu()">Projects</a>
+        <a href="#contact" class="hover:text-primary" onclick="toggleMenu()">Contact</a>
+    </div>
+
+    <main class="relative z-10 pt-32 pb-20 px-4 md:px-0">
         
-        <!-- HERO SECTION -->
-        <section id="section-home" class="min-h-screen flex flex-col items-center justify-center px-4 relative perspective-1000">
-            <div class="text-center transform-gpu relative z-20">
-                <div class="inline-flex items-center gap-3 px-4 py-1 border border-accent/30 rounded-full bg-accent/5 mb-8 opacity-0 reveal-text backdrop-blur-sm">
-                    <div class="w-1.5 h-1.5 bg-accent rounded-full animate-pulse shadow-[0_0_10px_var(--accent)]"></div>
-                    <span class="font-tech text-accent text-[10px] tracking-[0.3em]">SYSTEM ONLINE // IITM NODE</span>
+        <!-- Hero Section -->
+        <section class="min-h-[80vh] flex flex-col justify-center items-center text-center max-w-4xl mx-auto mb-20">
+            <div class="mb-6 animate-float">
+                <div class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-2 border-white/10 p-1 mx-auto relative group">
+                    <img src="https://ui-avatars.com/api/?name=Varshika+Jain&background=6366f1&color=fff&size=200" alt="Varshika" class="rounded-full w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 rounded-full border border-white/20 animate-ping opacity-20"></div>
                 </div>
-                
-                <h1 class="font-syncopate text-6xl md:text-9xl font-bold mb-6 hero-text opacity-0 reveal-text text-white mix-blend-screen glitch-wrapper">
-                    <span class="glitch-text" data-text="VARSHIKA">VARSHIKA</span>
-                </h1>
-                
-                <p class="text-lg md:text-xl text-gray-400 font-light max-w-2xl mx-auto mb-12 opacity-0 reveal-text font-tech">
-                    Constructing intelligence from chaos. 
-                    <br>
-                    <span class="text-accent">Data Scientist</span> & <span class="text-secondary">Machine Learning Engineer</span>.
-                </p>
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-display font-bold mb-6 leading-tight mask-text overflow-hidden">
+                <span class="block reveal-text translate-y-full">Designing With</span>
+                <span class="block reveal-text translate-y-full bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent">Data & Soul.</span>
+            </h1>
+            
+            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 reveal-opacity opacity-0">
+                I translate complex datasets into actionable intelligence and build web experiences that feel like magic.
+            </p>
 
-                <div class="opacity-0 reveal-text flex gap-4 justify-center">
-                    <a href="#section-projects" class="group relative px-8 py-4 bg-accent/5 overflow-hidden border border-accent/50 text-accent font-bold tracking-widest hover:text-black transition-all duration-300">
-                        <div class="absolute inset-0 w-0 bg-accent transition-all duration-[250ms] ease-out group-hover:w-full"></div>
-                        <span class="relative flex items-center gap-2 text-xs font-syncopate">START MISSION <i data-lucide="play" class="w-3 h-3 fill-current"></i></span>
+            <div class="flex flex-col md:flex-row gap-4 reveal-opacity opacity-0">
+                <a href="#projects" class="px-8 py-4 bg-white text-black font-bold rounded-full hover:scale-105 transition-transform flex items-center justify-center gap-2">
+                    View My Work <i data-lucide="arrow-down-right" class="w-5 h-5"></i>
+                </a>
+                <a href="https://github.com/Varshikaa29" target="_blank" class="px-8 py-4 glass-card rounded-full hover:bg-white/10 transition-colors flex items-center justify-center gap-2">
+                    <i data-lucide="github" class="w-5 h-5"></i> GitHub
+                </a>
+            </div>
+        </section>
+
+        <!-- Bento Grid Layout Container -->
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4 auto-rows-[minmax(180px,auto)]">
+            
+            <!-- About Card (Large) -->
+            <div class="glass-card rounded-3xl p-8 md:col-span-2 lg:col-span-2 row-span-1 scroll-reveal">
+                <div class="flex flex-col h-full justify-between">
+                    <div>
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                            <span class="text-xs uppercase tracking-widest text-gray-500">About Me</span>
+                        </div>
+                        <h3 class="text-3xl font-display font-semibold mb-4">The Architect of Answers</h3>
+                        <p class="text-gray-400 leading-relaxed">
+                            BS Data Science student at <span class="text-white font-medium">IIT Madras</span>. I don't just crunch numbers; I tell stories with them. From predictive modeling to full-stack interactions, I bridge the gap between "what is" and "what if".
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Card (Small) -->
+            <div class="glass-card rounded-3xl p-8 flex flex-col justify-center items-center text-center scroll-reveal group relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <h4 class="text-5xl font-display font-bold mb-2 group-hover:scale-110 transition-transform">3.9</h4>
+                <p class="text-sm text-gray-500 uppercase tracking-widest">GPA Index</p>
+            </div>
+
+             <!-- Location Card (Small) -->
+             <div class="glass-card rounded-3xl p-8 flex flex-col justify-center items-center text-center scroll-reveal relative overflow-hidden">
+                <div class="absolute inset-0 bg-[url('https://api.mapbox.com/styles/v1/mapbox/dark-v10/static/80.2707,13.0827,11,0/400x400?access_token=YOUR_TOKEN')] bg-cover opacity-20 grayscale hover:grayscale-0 transition-all duration-700 hover:scale-110"></div> <!-- Placeholder Map BG -->
+                <i data-lucide="map-pin" class="w-8 h-8 text-accent mb-4 relative z-10"></i>
+                <h4 class="text-xl font-display font-bold relative z-10">Chennai</h4>
+                <p class="text-xs text-gray-500 uppercase tracking-widest relative z-10">India</p>
+            </div>
+
+            <!-- Tech Stack (Wide) -->
+            <div id="stack" class="glass-card rounded-3xl p-8 md:col-span-3 lg:col-span-2 row-span-1 scroll-reveal">
+                <div class="flex items-center gap-2 mb-6">
+                    <i data-lucide="cpu" class="w-4 h-4 text-secondary"></i>
+                    <span class="text-xs uppercase tracking-widest text-gray-500">Arsenal</span>
+                </div>
+                <div class="grid grid-cols-4 md:grid-cols-8 gap-4">
+                    <!-- Tech Items -->
+                    <div class="flex flex-col items-center gap-2 group">
+                        <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center group-hover:bg-blue-500/20 group-hover:text-blue-400 transition-all">
+                            <i data-lucide="file-code-2"></i>
+                        </div>
+                        <span class="text-[10px] text-gray-500">Python</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 group">
+                        <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center group-hover:bg-yellow-500/20 group-hover:text-yellow-400 transition-all">
+                            <i data-lucide="database"></i>
+                        </div>
+                        <span class="text-[10px] text-gray-500">SQL</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 group">
+                        <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center group-hover:bg-orange-500/20 group-hover:text-orange-400 transition-all">
+                            <i data-lucide="flame"></i>
+                        </div>
+                        <span class="text-[10px] text-gray-500">Flask</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 group">
+                        <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center group-hover:bg-cyan-500/20 group-hover:text-cyan-400 transition-all">
+                            <i data-lucide="bar-chart-2"></i>
+                        </div>
+                        <span class="text-[10px] text-gray-500">Pandas</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 group">
+                        <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center group-hover:bg-pink-500/20 group-hover:text-pink-400 transition-all">
+                            <i data-lucide="brain-circuit"></i>
+                        </div>
+                        <span class="text-[10px] text-gray-500">ML</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 group">
+                        <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center group-hover:bg-purple-500/20 group-hover:text-purple-400 transition-all">
+                            <i data-lucide="globe"></i>
+                        </div>
+                        <span class="text-[10px] text-gray-500">Web</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Area -->
+             <div class="glass-card rounded-3xl p-8 md:col-span-1 lg:col-span-2 flex items-center justify-between group scroll-reveal cursor-pointer hover:bg-white/5">
+                <div>
+                    <span class="text-xs uppercase tracking-widest text-gray-500 mb-2 block">Current Focus</span>
+                    <h3 class="text-2xl font-display font-medium">Deep Learning & <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Generative AI</span></h3>
+                </div>
+                <div class="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center group-hover:rotate-45 transition-transform duration-500">
+                    <i data-lucide="sparkles" class="text-yellow-300"></i>
+                </div>
+            </div>
+
+            <!-- PROJECTS HEADER -->
+            <div id="projects" class="col-span-1 md:col-span-3 lg:col-span-4 mt-20 mb-8 scroll-reveal">
+                <h2 class="text-4xl font-display font-bold">Selected Works <span class="text-gray-600 text-lg font-sans font-normal ml-4">2024 — 2026</span></h2>
+            </div>
+
+            <!-- Project 1 -->
+            <div class="glass-card rounded-3xl p-0 md:col-span-2 lg:col-span-2 row-span-2 relative overflow-hidden group scroll-reveal">
+                <div class="absolute top-6 left-6 z-20">
+                    <span class="px-3 py-1 bg-black/50 backdrop-blur-md rounded-full text-xs border border-white/10">Data Analytics</span>
+                </div>
+                <div class="h-64 sm:h-80 bg-gradient-to-b from-blue-900/20 to-black/40 p-8 flex items-center justify-center group-hover:scale-105 transition-transform duration-700">
+                     <!-- Abstract representation of charts -->
+                     <svg class="w-32 h-32 text-blue-500/50 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M3 3v18h18M18 17V9M13 17V5M8 17v-3"/></svg>
+                </div>
+                <div class="p-8 relative z-10 bg-dark/50 backdrop-blur-sm border-t border-white/5">
+                    <h3 class="text-2xl font-display font-bold mb-2">Crypto Market Engine</h3>
+                    <p class="text-gray-400 text-sm mb-6 line-clamp-2">Real-time cryptocurrency trend analysis using Python and Matplotlib. Visualizing volatility in high-frequency trading environments.</p>
+                    <div class="flex justify-between items-center">
+                        <div class="flex -space-x-2">
+                            <!-- Tech icons overlap -->
+                            <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-[10px]">Py</div>
+                            <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-[10px]">Pd</div>
+                        </div>
+                        <a href="https://github.com/Varshikaa29/crypto-analysis" class="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform">
+                            <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="glass-card rounded-3xl p-0 md:col-span-1 lg:col-span-2 relative overflow-hidden group scroll-reveal">
+                <div class="h-48 bg-gradient-to-tr from-purple-900/20 to-black/40 flex items-center justify-center group-hover:scale-105 transition-transform duration-700">
+                    <i data-lucide="shopping-bag" class="w-20 h-20 text-purple-400/50"></i>
+                </div>
+                <div class="p-6 relative z-10">
+                    <h3 class="text-xl font-display font-bold mb-1">Plum Market Ops</h3>
+                    <p class="text-gray-400 text-xs mb-4">Strategic sales distribution analysis.</p>
+                    <a href="https://github.com/Varshikaa29/plum-market-analysis" class="text-xs font-bold text-purple-400 hover:text-white transition-colors flex items-center gap-1">VIEW CASE STUDY <i data-lucide="arrow-right" class="w-3 h-3"></i></a>
+                </div>
+            </div>
+
+             <!-- Project 3 -->
+             <div class="glass-card rounded-3xl p-0 md:col-span-1 lg:col-span-1 relative overflow-hidden group scroll-reveal">
+                <div class="h-48 bg-gradient-to-bl from-green-900/20 to-black/40 flex items-center justify-center group-hover:scale-105 transition-transform duration-700">
+                    <i data-lucide="map" class="w-20 h-20 text-green-400/50"></i>
+                </div>
+                <div class="p-6 relative z-10">
+                    <h3 class="text-xl font-display font-bold mb-1">IITM BS Roadmap</h3>
+                    <p class="text-gray-400 text-xs mb-4">Student curriculum guide.</p>
+                    <a href="https://github.com/Varshikaa29/iitm-bs-roadmap" class="text-xs font-bold text-green-400 hover:text-white transition-colors flex items-center gap-1">CHECK REPO <i data-lucide="arrow-right" class="w-3 h-3"></i></a>
+                </div>
+            </div>
+
+             <!-- Project 4 (Blog) -->
+             <div class="glass-card rounded-3xl p-0 md:col-span-1 lg:col-span-1 relative overflow-hidden group scroll-reveal">
+                <div class="h-48 bg-gradient-to-br from-pink-900/20 to-black/40 flex items-center justify-center group-hover:scale-105 transition-transform duration-700">
+                    <i data-lucide="book-open" class="w-20 h-20 text-pink-400/50"></i>
+                </div>
+                <div class="p-6 relative z-10">
+                    <h3 class="text-xl font-display font-bold mb-1">Neural Blogs</h3>
+                    <p class="text-gray-400 text-xs mb-4">Tech insights & writing.</p>
+                    <a href="https://github.com/Varshikaa29/varshika-blogs" class="text-xs font-bold text-pink-400 hover:text-white transition-colors flex items-center gap-1">READ NOW <i data-lucide="arrow-right" class="w-3 h-3"></i></a>
+                </div>
+            </div>
+
+            <!-- Contact Section -->
+            <div id="contact" class="glass-card rounded-3xl p-10 md:col-span-3 lg:col-span-4 mt-12 mb-12 flex flex-col md:flex-row items-center justify-between gap-8 scroll-reveal">
+                <div class="text-center md:text-left">
+                    <h2 class="text-4xl font-display font-bold mb-4">Let's create something <br> <span class="text-primary">extraordinary.</span></h2>
+                    <p class="text-gray-400 max-w-md">Open for internships and collaborative projects in Data Science and Web Development.</p>
+                </div>
+                <div class="flex flex-col gap-4 w-full md:w-auto">
+                    <a href="mailto:varshika.jain@iitm.ac.in" class="px-8 py-4 bg-white text-black font-bold rounded-full hover:bg-gray-200 transition-colors text-center">
+                        hello@varshika.dev
                     </a>
-                    <a href="https://github.com/Varshikaa29" target="_blank" class="px-8 py-4 border border-white/20 text-gray-400 font-bold tracking-widest hover:text-white hover:border-white transition-all duration-300 flex items-center gap-2 text-xs font-syncopate bg-black/50 backdrop-blur-sm">
-                        <i data-lucide="github" class="w-4 h-4"></i> GITHUB
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- STATS SECTION -->
-        <section id="section-about" class="min-h-screen flex items-center px-4 md:px-20 py-20 relative">
-            <div class="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-20 items-center">
-                
-                <!-- Rotating 3D Data Card -->
-                <div class="relative hidden md:block perspective-card">
-                    <div class="absolute inset-0 bg-accent/10 blur-[80px] rounded-full animate-pulse pointer-events-none"></div>
-                    <div class="w-full aspect-square border border-white/10 bg-black/60 backdrop-blur-xl relative p-10 flex flex-col justify-between overflow-hidden glass-panel rotate-y-12 transform-gpu shadow-2xl">
-                        <!-- Decorative Header -->
-                        <div class="flex justify-between items-center border-b border-white/10 pb-4">
-                            <div class="flex gap-2">
-                                <div class="w-3 h-3 rounded-full bg-red-500/50"></div>
-                                <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
-                                <div class="w-3 h-3 rounded-full bg-green-500/50"></div>
-                            </div>
-                            <span class="font-tech text-accent text-xs">ID: VARSHIKA_29</span>
-                        </div>
-                        
-                        <div class="grid grid-cols-2 gap-6 mt-8">
-                            <div class="p-6 bg-white/5 border border-white/5 hover:border-accent/40 transition-colors">
-                                <div class="text-3xl font-bold text-white mb-2 font-syncopate">BS</div>
-                                <div class="text-[10px] text-accent font-tech tracking-widest">IIT MADRAS</div>
-                            </div>
-                            <div class="p-6 bg-white/5 border border-white/5 hover:border-secondary/40 transition-colors">
-                                <div class="text-3xl font-bold text-white mb-2 font-syncopate">A+</div>
-                                <div class="text-[10px] text-secondary font-tech tracking-widest">GRADE INDEX</div>
-                            </div>
-                            <div class="p-6 bg-white/5 border border-white/5 col-span-2 relative overflow-hidden group">
-                                <div class="absolute inset-0 bg-gradient-to-r from-accent/0 via-accent/5 to-accent/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-                                <div class="text-lg font-bold text-white mb-1">Data Science & Applications</div>
-                                <div class="text-xs text-gray-500 font-tech">SPECIALIZATION</div>
-                            </div>
-                        </div>
-
-                        <div class="mt-auto pt-6">
-                            <div class="flex justify-between text-[10px] font-tech text-gray-400 mb-2">
-                                <span>SKILL CORRELATION MATRIX</span>
-                                <span>OPTIMAL</span>
-                            </div>
-                            <div class="flex gap-1 h-1 w-full">
-                                <div class="h-full bg-accent w-1/3 animate-pulse"></div>
-                                <div class="h-full bg-secondary w-1/4 animate-pulse delay-75"></div>
-                                <div class="h-full bg-white/20 w-flex-1"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Text Content -->
-                <div class="gsap-text-block relative z-20">
-                    <h2 class="text-5xl md:text-7xl font-bold font-syncopate mb-8 leading-[0.9]">
-                        DATA <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-accent">OPERATIVE</span>
-                    </h2>
-                    <p class="text-gray-400 text-lg leading-relaxed mb-10 font-tech border-l border-accent/50 pl-6">
-                        "Decoding the noise to find the signal." <br><br>
-                        Specializing in high-dimensional data analysis, predictive modeling, and building robust data pipelines. Currently levelling up my skills at the prestigious IIT Madras.
-                    </p>
-                    
-                    <div class="space-y-6">
-                        <div class="flex items-center gap-6 group cursor-default">
-                            <div class="w-14 h-14 rounded-none border border-gray-700 flex items-center justify-center group-hover:border-accent group-hover:shadow-[0_0_15px_var(--accent-glow)] transition-all bg-black/40">
-                                <i data-lucide="code-2" class="group-hover:text-accent transition-colors"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-white font-syncopate text-sm">CORE SYSTEMS</h4>
-                                <p class="text-xs text-gray-500 font-tech tracking-wider mt-1">PYTHON / SQL / FLASK / NUMPY</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-6 group cursor-default">
-                            <div class="w-14 h-14 rounded-none border border-gray-700 flex items-center justify-center group-hover:border-secondary group-hover:shadow-[0_0_15px_rgba(188,19,254,0.5)] transition-all bg-black/40">
-                                <i data-lucide="brain-circuit" class="group-hover:text-secondary transition-colors"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-white font-syncopate text-sm">INTELLIGENCE</h4>
-                                <p class="text-xs text-gray-500 font-tech tracking-wider mt-1">SCIKIT-LEARN / TENSORFLOW / NLP</p>
-                            </div>
-                        </div>
+                    <div class="flex justify-center gap-4">
+                        <a href="#" class="w-12 h-12 rounded-full glass-card flex items-center justify-center hover:bg-white hover:text-black transition-all">
+                            <i data-lucide="linkedin" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 rounded-full glass-card flex items-center justify-center hover:bg-white hover:text-black transition-all">
+                            <i data-lucide="twitter" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 rounded-full glass-card flex items-center justify-center hover:bg-white hover:text-black transition-all">
+                            <i data-lucide="instagram" class="w-5 h-5"></i>
+                        </a>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- PROJECTS SECTION -->
-        <section id="section-projects" class="min-h-screen py-24 px-4 relative">
-            <div class="max-w-7xl mx-auto">
-                <div class="flex items-end justify-between mb-20 border-b border-gray-800 pb-4">
-                    <h2 class="text-4xl md:text-6xl font-bold font-syncopate">
-                        MISSION <span class="text-accent">LOGS</span>
-                    </h2>
-                    <span class="font-tech text-gray-500 hidden md:inline-block">/ SELECT PROTOCOL</span>
-                </div>
-
-                <div class="grid md:grid-cols-2 gap-8">
-                    
-                    <!-- Project 1: Crypto Analysis -->
-                    <div class="glass-panel p-10 relative group project-card h-full flex flex-col items-start bg-black/40">
-                        <div class="hud-corner hud-tl"></div>
-                        <div class="hud-corner hud-tr"></div>
-                        <div class="hud-corner hud-bl"></div>
-                        <div class="hud-corner hud-br"></div>
-
-                        <div class="flex justify-between items-start w-full mb-6">
-                            <h3 class="text-2xl font-bold text-white group-hover:text-accent transition-colors font-syncopate">CRYPTO_ANALYSIS</h3>
-                            <span class="px-2 py-1 bg-accent/10 border border-accent/20 text-accent text-[10px] font-tech tracking-widest">DATA</span>
-                        </div>
-                        
-                        <p class="text-gray-400 mb-8 font-tech text-sm leading-relaxed flex-grow">
-                            A comprehensive analytical engine for cryptocurrency market trends. leveraging Python to process real-time data streams and visualize volatility utilizing Matplotlib and Seaborn.
-                        </p>
-                        
-                        <div class="flex flex-wrap gap-3 mt-auto w-full pt-6 border-t border-white/5">
-                            <span class="text-[10px] font-syncopate text-gray-500 border border-gray-800 px-2 py-1">PYTHON</span>
-                            <span class="text-[10px] font-syncopate text-gray-500 border border-gray-800 px-2 py-1">PANDAS</span>
-                            <span class="text-[10px] font-syncopate text-gray-500 border border-gray-800 px-2 py-1">MATPLOTLIB</span>
-                        </div>
-                        
-                        <a href="https://github.com/Varshikaa29/crypto-analysis" target="_blank" class="absolute bottom-8 right-8 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-2 group-hover:translate-x-0 p-2 bg-accent text-black rounded-full">
-                            <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
-                        </a>
-                    </div>
-
-                    <!-- Project 2: Plum Market Analysis -->
-                    <div class="glass-panel p-10 relative group project-card h-full flex flex-col items-start bg-black/40 md:mt-12">
-                        <div class="hud-corner hud-tl"></div>
-                        <div class="hud-corner hud-tr"></div>
-                        <div class="hud-corner hud-bl"></div>
-                        <div class="hud-corner hud-br"></div>
-
-                        <div class="flex justify-between items-start w-full mb-6">
-                            <h3 class="text-2xl font-bold text-white group-hover:text-secondary transition-colors font-syncopate">PLUM_MARKET_OPS</h3>
-                            <span class="px-2 py-1 bg-secondary/10 border border-secondary/20 text-secondary text-[10px] font-tech tracking-widest">BUSINESS</span>
-                        </div>
-                        
-                        <p class="text-gray-400 mb-8 font-tech text-sm leading-relaxed flex-grow">
-                            Strategic data analysis initiative for consumer products. Deconstructs sales distribution and customer sentiment to derive actionable business intelligence insights.
-                        </p>
-                        
-                        <div class="flex flex-wrap gap-3 mt-auto w-full pt-6 border-t border-white/5">
-                            <span class="text-[10px] font-syncopate text-gray-500 border border-gray-800 px-2 py-1">ANALYTICS</span>
-                            <span class="text-[10px] font-syncopate text-gray-500 border border-gray-800 px-2 py-1">VIZ</span>
-                            <span class="text-[10px] font-syncopate text-gray-500 border border-gray-800 px-2 py-1">REPORTING</span>
-                        </div>
-                        
-                        <a href="https://github.com/Varshikaa29/plum-market-analysis" target="_blank" class="absolute bottom-8 right-8 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-2 group-hover:translate-x-0 p-2 bg-secondary text-white rounded-full">
-                            <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
-                        </a>
-                    </div>
-
-                    <!-- Project 3: IITM BS Roadmap -->
-                    <div class="glass-panel p-10 relative group project-card h-full flex flex-col items-start bg-black/40">
-                        <div class="hud-corner hud-tl"></div>
-                        <div class="hud-corner hud-tr"></div>
-                        <div class="hud-corner hud-bl"></div>
-                        <div class="hud-corner hud-br"></div>
-
-                        <div class="flex justify-between items-start w-full mb-6">
-                            <h3 class="text-2xl font-bold text-white group-hover:text-green-400 transition-colors font-syncopate">IITM_ROADMAP</h3>
-                            <span class="px-2 py-1 bg-green-400/10 border border-green-400/20 text-green-400 text-[10px] font-tech tracking-widest">GUIDE</span>
-                        </div>
-                        
-                        <p class="text-gray-400 mb-8 font-tech text-sm leading-relaxed flex-grow">
-                            A structured navigation system for the IIT Madras Data Science degree. Helping fellow students compute the optimal path through curriculum complexities.
-                        </p>
-                        
-                        <div class="flex flex-wrap gap-3 mt-auto w-full pt-6 border-t border-white/5">
-                            <span class="text-[10px] font-syncopate text-gray-500 border border-gray-800 px-2 py-1">COMMUNITY</span>
-                            <span class="text-[10px] font-syncopate text-gray-500 border border-gray-800 px-2 py-1">EDUCATION</span>
-                            <span class="text-[10px] font-syncopate text-gray-500 border border-gray-800 px-2 py-1">DOCS</span>
-                        </div>
-                        
-                        <a href="https://github.com/Varshikaa29/iitm-bs-roadmap" target="_blank" class="absolute bottom-8 right-8 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-2 group-hover:translate-x-0 p-2 bg-green-400 text-black rounded-full">
-                            <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
-                        </a>
-                    </div>
-
-                    <!-- Project 4: Blogs -->
-                    <div class="glass-panel p-10 relative group project-card h-full flex flex-col items-start bg-black/40 md:mt-12">
-                        <div class="hud-corner hud-tl"></div>
-                        <div class="hud-corner hud-tr"></div>
-                        <div class="hud-corner hud-bl"></div>
-                        <div class="hud-corner hud-br"></div>
-
-                        <div class="flex justify-between items-start w-full mb-6">
-                            <h3 class="text-2xl font-bold text-white group-hover:text-pink-500 transition-colors font-syncopate">NEURAL_BLOGS</h3>
-                            <span class="px-2 py-1 bg-pink-500/10 border border-pink-500/20 text-pink-500 text-[10px] font-tech tracking-widest">WEB</span>
-                        </div>
-                        
-                        <p class="text-gray-400 mb-8 font-tech text-sm leading-relaxed flex-grow">
-                            Personal knowledge repository and broadcasting platform. Sharing insights on technical challenges, algorithm breakdowns, and student experiences.
-                        </p>
-                        
-                        <div class="flex flex-wrap gap-3 mt-auto w-full pt-6 border-t border-white/5">
-                            <span class="text-[10px] font-syncopate text-gray-500 border border-gray-800 px-2 py-1">HTML5</span>
-                            <span class="text-[10px] font-syncopate text-gray-500 border border-gray-800 px-2 py-1">CSS3</span>
-                            <span class="text-[10px] font-syncopate text-gray-500 border border-gray-800 px-2 py-1">WRITING</span>
-                        </div>
-                        
-                        <a href="https://github.com/Varshikaa29/varshika-blogs" target="_blank" class="absolute bottom-8 right-8 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-2 group-hover:translate-x-0 p-2 bg-pink-500 text-white rounded-full">
-                            <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
-                        </a>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- CONTACT SECTION -->
-        <section id="section-contact" class="min-h-screen flex items-center justify-center relative px-4 bg-gradient-to-t from-accent/5 to-transparent">
-            <div class="text-center z-10 max-w-3xl w-full">
-                <div class="glass-panel p-12 md:p-20 rounded-3xl border border-accent/20 relative overflow-hidden">
-                    <!-- Background Grid Animation -->
-                    <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
-                    
-                    <h2 class="text-4xl md:text-6xl font-bold font-syncopate mb-8">
-                        ESTABLISH <span class="text-accent blinking-text">UPLINK</span>
-                    </h2>
-                    <p class="text-gray-400 mb-12 font-tech">
-                        The neural link is open. Ready to collaborate on data-driven projects?
-                    </p>
-                    
-                    <div class="flex flex-col md:flex-row gap-6 justify-center relative z-20">
-                        <a href="mailto:varshika.jain@iitm.ac.in" class="px-10 py-5 bg-accent text-black font-bold font-syncopate hover:bg-white transition-all transform hover:scale-105 shadow-[0_0_20px_var(--accent)] tracking-widest text-sm">
-                            TRANSMIT EMAIL
-                        </a>
-                        <a href="https://github.com/Varshikaa29" target="_blank" class="px-10 py-5 border border-white/20 hover:border-accent hover:text-accent font-syncopate transition-all flex items-center justify-center gap-3 bg-black/50 backdrop-blur-md text-sm tracking-widest">
-                            <i data-lucide="github" class="w-4 h-4"></i> GITHUB
-                        </a>
-                    </div>
-                </div>
-                
-                <footer class="mt-16 text-[10px] font-tech text-gray-600 tracking-widest uppercase">
-                    SYSTEM ID: VARSHIKAA29 // STATUS: OPERATIONAL // © 2026
-                </footer>
-            </div>
-        </section>
+        </div> <!-- End Grid -->
+        
+        <footer class="text-center text-gray-600 text-sm py-8">
+            <p>© 2026 Varshika Jain. Built with 🔥 & 💻.</p>
+        </footer>
 
     </main>
 
     <script>
-        // --- 1. INITIAL SETUP ---
+        // --- 1. SETUP ---
         lucide.createIcons();
         gsap.registerPlugin(ScrollTrigger);
 
-        // --- 2. THREE.JS INFINITE TERRAIN ---
-        const initThreeJS = () => {
-            const container = document.getElementById('webgl-container');
-            const scene = new THREE.Scene();
-            
-            // Fog for infinite depth feel, matches body bg
-            scene.fog = new THREE.FogExp2(0x020010, 0.003);
-
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-            
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            container.appendChild(renderer.domElement);
-
-            // -- TERRAIN (Grid) --
-            // Create a larger, more detailed grid
-            const geometry = new THREE.PlaneGeometry(200, 200, 60, 60);
-            const material = new THREE.MeshBasicMaterial({ 
-                color: 0x00f3ff, 
-                wireframe: true, 
-                transparent: true, 
-                opacity: 0.15 
-            });
-            const grid = new THREE.Mesh(geometry, material);
-            grid.rotation.x = -Math.PI / 2;
-            grid.position.y = -5;
-            scene.add(grid);
-
-            // Second grid for infinite looping illusion
-            const grid2 = grid.clone();
-            grid2.position.z = -200;
-            scene.add(grid2);
-
-            // -- PARTICLES (Starfield) --
-            const particlesGeometry = new THREE.BufferGeometry();
-            const particlesCount = 1500;
-            const posArray = new Float32Array(particlesCount * 3);
-
-            for(let i = 0; i < particlesCount * 3; i++) {
-                posArray[i] = (Math.random() - 0.5) * 400; // Spread wide
-            }
-
-            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-            const particlesMaterial = new THREE.PointsMaterial({
-                size: 0.25,
-                color: 0xffffff,
-                transparent: true,
-                opacity: 0.6,
-                blending: THREE.AdditiveBlending
-            });
-            const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-            scene.add(particlesMesh);
-
-            // Camera Setup
-            camera.position.z = 15;
-            camera.position.y = 3;
-
-            // --- ANIMATION TRACKING ---
-            let speed = 0.05;
-            let targetSpeed = 0.05;
-            let mouseX = 0;
-            let mouseY = 0;
-            let targetMouseX = 0;
-            let targetMouseY = 0;
-
-            // Mouse Interaction
-            document.addEventListener('mousemove', (event) => {
-                targetMouseX = (event.clientX - window.innerWidth / 2) * 0.0005;
-                targetMouseY = (event.clientY - window.innerHeight / 2) * 0.0005;
-            });
-
-            // Warp speed on scroll
-            window.addEventListener('scroll', () => {
-                const scrollY = window.scrollY;
-                const maxScroll = document.body.scrollHeight - window.innerHeight;
-                const scrollPercent = scrollY / maxScroll;
-                
-                targetSpeed = 0.05 + (scrollPercent * 0.8);
-            });
-
-            const animate = () => {
-                requestAnimationFrame(animate);
-
-                // Smooth acceleration
-                speed += (targetSpeed - speed) * 0.05;
-
-                // Move Grids for infinite effect
-                grid.position.z += speed * 5;
-                grid2.position.z += speed * 5;
-
-                if (grid.position.z >= 100) grid.position.z = -300;
-                if (grid2.position.z >= 100) grid2.position.z = -300;
-
-                // Gentle wave effect on grid vertices (Optional Visual Flair)
-                // Note: Modifying buffer geometry vertices in loop can be expensive, keeping it simple for performance
-                
-                // Move Stars
-                particlesMesh.position.z += speed * 10;
-                if (particlesMesh.position.z >= 200) particlesMesh.position.z = -200;
-
-                // Camera Sway
-                mouseX += (targetMouseX - mouseX) * 0.05;
-                mouseY += (targetMouseY - mouseY) * 0.05;
-                
-                camera.rotation.y = -mouseX;
-                camera.rotation.x = -mouseY;
-
-                renderer.render(scene, camera);
-            };
-
-            animate();
-
-            // Handle Resize
-            window.addEventListener('resize', () => {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-            });
-
-            // Reveal Sequence
-            setTimeout(() => {
-                container.style.opacity = 0.8;
-                const loader = document.getElementById('loader');
-                loader.style.opacity = 0;
-                loader.style.transition = 'opacity 0.5s ease';
-                
-                setTimeout(() => {
-                    loader.style.display = 'none';
-                    revealHero();
-                }, 500);
-            }, 1500); // Fake load time
-        };
-
-        // --- 3. GSAP ANIMATIONS ---
+        // --- 2. ANIMATIONS ---
         
-        // Progress Bar
-        window.addEventListener('scroll', () => {
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            document.querySelector('.warp-bar').style.height = scrolled + "%";
+        // Hero Text Reveal
+        gsap.to('.reveal-text', {
+            y: 0,
+            duration: 1.5,
+            stagger: 0.2,
+            ease: 'power4.out',
+            delay: 0.5
         });
 
-        // Hero Reveal
-        const revealHero = () => {
-            gsap.to('.reveal-text', {
-                y: 0,
-                opacity: 1,
-                duration: 1.2,
-                stagger: 0.15,
-                ease: 'power3.out'
-            });
-        };
+        // Hero Opacity fade in
+        gsap.to('.reveal-opacity', {
+            opacity: 1,
+            duration: 1.5,
+            delay: 1.2
+        });
 
-        const initScrollAnimations = () => {
-            // Stats Section
-            gsap.from('.gsap-text-block', {
+        // Bento Grid Items Reveal on Scroll
+        const items = document.querySelectorAll('.scroll-reveal');
+        items.forEach((item, index) => {
+            gsap.from(item, {
                 scrollTrigger: {
-                    trigger: '#section-about',
-                    start: 'top 80%',
+                    trigger: item,
+                    start: 'top 85%',
                 },
-                x: 50,
+                y: 50,
                 opacity: 0,
-                duration: 1,
-                ease: 'power3.out'
+                duration: 0.8,
+                delay: index % 3 * 0.1, // Simple stagger logic based on grid
+                ease: 'power2.out'
             });
+        });
 
-            gsap.from('.perspective-card', {
-                scrollTrigger: {
-                    trigger: '#section-about',
-                    start: 'top 80%',
-                },
-                rotateY: 90,
-                opacity: 0,
-                duration: 1.5,
-                ease: 'elastic.out(1, 0.75)'
-            });
+        // Navbar blur effect on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('bg-dark/80', 'backdrop-blur-lg');
+                nav.classList.remove('py-4');
+                nav.classList.add('py-2');
+            } else {
+                nav.classList.remove('bg-dark/80', 'backdrop-blur-lg');
+                nav.classList.remove('py-2');
+                nav.classList.add('py-4');
+            }
+        });
 
-            // Project Cards Stagger
-            const projects = gsap.utils.toArray('.project-card');
-            projects.forEach((card, i) => {
-                gsap.from(card, {
-                    scrollTrigger: {
-                        trigger: card,
-                        start: 'top 90%',
-                    },
-                    y: 50,
-                    opacity: 0,
-                    duration: 0.8,
-                    delay: i * 0.1, // Stagger based on index
-                    ease: 'power2.out'
-                });
-            });
-        };
+        // Mobile Menu Logic
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = menuBtn.querySelector('i');
+        let isMenuOpen = false;
 
-        // Initialize
-        initThreeJS();
-        initScrollAnimations();
+        function toggleMenu() {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) {
+                mobileMenu.classList.add('open');
+                menuIcon.setAttribute('data-lucide', 'x');
+            } else {
+                mobileMenu.classList.remove('open');
+                menuIcon.setAttribute('data-lucide', 'menu');
+            }
+            lucide.createIcons();
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
 
     </script>
 </body>
