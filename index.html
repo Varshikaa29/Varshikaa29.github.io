@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Varshika Jain | Portfolio</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        slate: {
+                            950: '#020617',
+                        }
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #020617;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .nav-glass {
+            background: rgba(2, 6, 23, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-200 font-sans selection:bg-cyan-500 selection:text-slate-950 overflow-x-hidden">
+
+    <!-- Background Effects -->
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div class="absolute top-[-10%] left-[-10%] w-[40rem] h-[40rem] rounded-full bg-purple-600/20 blur-[100px] animate-blob"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[35rem] h-[35rem] rounded-full bg-cyan-600/20 blur-[100px] animate-blob animation-delay-2000"></div>
+        <div class="absolute top-[40%] left-[40%] w-[30rem] h-[30rem] rounded-full bg-blue-600/20 blur-[100px] animate-blob animation-delay-4000"></div>
+        <!-- Grid Overlay -->
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 py-6">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-500">
+                VJ.
+            </a>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#home" class="nav-link text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors">Home</a>
+                <a href="#about" class="nav-link text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors">About</a>
+                <a href="#experience" class="nav-link text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors">Experience</a>
+                <a href="#skills" class="nav-link text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors">Skills</a>
+                <a href="#contact" class="nav-link text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors">Contact</a>
+            </div>
+
+            <a href="https://www.linkedin.com/in/varshika-jain-a81109329/" target="_blank" class="hidden md:flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-2 rounded-full text-sm transition-all group">
+                <i data-lucide="linkedin" class="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform"></i>
+                <span>Connect</span>
+            </a>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-slate-200">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="fixed inset-0 bg-slate-950/95 backdrop-blur-xl z-40 transform translate-x-full transition-transform duration-300 md:hidden flex flex-col justify-center items-center space-y-8">
+            <button id="close-menu-btn" class="absolute top-6 right-6 text-slate-400 hover:text-white">
+                <i data-lucide="x" class="w-8 h-8"></i>
+            </button>
+            <a href="#home" class="mobile-link text-2xl font-bold text-slate-300 hover:text-cyan-400">Home</a>
+            <a href="#about" class="mobile-link text-2xl font-bold text-slate-300 hover:text-cyan-400">About</a>
+            <a href="#experience" class="mobile-link text-2xl font-bold text-slate-300 hover:text-cyan-400">Experience</a>
+            <a href="#skills" class="mobile-link text-2xl font-bold text-slate-300 hover:text-cyan-400">Skills</a>
+            <a href="#contact" class="mobile-link text-2xl font-bold text-slate-300 hover:text-cyan-400">Contact</a>
+        </div>
+    </nav>
+
+    <main class="relative z-10">
+        <!-- Hero Section -->
+        <section id="home" class="min-h-screen flex items-center pt-20">
+            <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6 order-2 md:order-1">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-sm font-mono">
+                        <i data-lucide="terminal" class="w-3 h-3"></i>
+                        <span>Hello World</span>
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-bold leading-tight">
+                        Hi, I'm <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">Varshika Jain</span>
+                    </h1>
+                    <p class="text-xl text-slate-400 max-w-lg">
+                        A passionate <span class="text-slate-200 font-semibold">Data Scientist</span> & <span class="text-slate-200 font-semibold">Entrepreneur</span> building the future with code and data. Currently crafting digital experiences.
+                    </p>
+                    <div class="flex flex-wrap gap-4 pt-4">
+                        <a href="#contact" class="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-bold rounded-full transition-all flex items-center gap-2">
+                            <i data-lucide="mail" class="w-4 h-4"></i>
+                            Get in Touch
+                        </a>
+                        <a href="#experience" class="px-6 py-3 glass-card hover:bg-white/10 rounded-full font-medium transition-all flex items-center gap-2">
+                            View Work
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="order-1 md:order-2 flex justify-center animate-float">
+                    <div class="relative w-72 h-72 md:w-96 md:h-96">
+                        <!-- Abstract Code Visual -->
+                        <div class="absolute inset-0 bg-gradient-to-tr from-cyan-500 to-purple-600 rounded-full blur-[60px] opacity-40"></div>
+                        <div class="relative z-10 w-full h-full glass-card rounded-2xl border border-white/10 p-6 flex flex-col gap-4 transform rotate-3 hover:rotate-0 transition-all duration-500">
+                            <div class="flex gap-2">
+                                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                            </div>
+                            <div class="flex-1 font-mono text-sm text-slate-400 space-y-2 overflow-hidden">
+                                <p><span class="text-purple-400">class</span> <span class="text-yellow-400">Innovator</span> {</p>
+                                <p class="pl-4"><span class="text-cyan-400">constructor</span>() {</p>
+                                <p class="pl-8">this.name = <span class="text-green-400">'Varshika'</span>;</p>
+                                <p class="pl-8">this.skills = [<span class="text-green-400">'Data Science'</span>, <span class="text-green-400">'Web Dev'</span>];</p>
+                                <p class="pl-8">this.passion = <span class="text-green-400">'Problem Solving'</span>;</p>
+                                <p class="pl-4">}</p>
+                                <p class="pl-4"><span class="text-blue-400">solve</span>(problem) {</p>
+                                <p class="pl-8"><span class="text-purple-400">return</span> <span class="text-cyan-400">new</span> Solution(problem);</p>
+                                <p class="pl-4">}</p>
+                                <p>}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-slate-500">
+                <i data-lucide="chevron-down" class="w-6 h-6"></i>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-20 bg-slate-900/50">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col md:flex-row gap-12 items-center">
+                    <div class="md:w-1/2">
+                        <h2 class="text-3xl font-bold mb-6 flex items-center gap-3">
+                            <i data-lucide="user" class="text-cyan-400"></i>
+                            About Me
+                        </h2>
+                        <p class="text-slate-400 leading-relaxed mb-4">
+                            I am a tech enthusiast and a student with a keen interest in the intersection of <span class="text-cyan-400">Data Science</span> and <span class="text-purple-400">Web Development</span>. My journey is driven by curiosity and the desire to build scalable solutions that make a real-world impact.
+                        </p>
+                        <p class="text-slate-400 leading-relaxed mb-6">
+                            Beyond coding, I embrace the <span class="text-yellow-400">entrepreneurial spirit</span>, constantly looking for opportunities to innovate and lead. Whether it's analyzing complex datasets or crafting intuitive user interfaces, I bring dedication and creativity to the table.
+                        </p>
+                        
+                        <div class="grid grid-cols-2 gap-4 mt-8">
+                            <div class="p-4 glass-card rounded-xl">
+                                <h3 class="text-2xl font-bold text-white mb-1">5+</h3>
+                                <p class="text-sm text-slate-400">Projects Completed</p>
+                            </div>
+                            <div class="p-4 glass-card rounded-xl">
+                                <h3 class="text-2xl font-bold text-white mb-1">2+</h3>
+                                <p class="text-sm text-slate-400">Years Experience</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="md:w-1/2 flex justify-center relative">
+                        <!-- Abstract shapes representation -->
+                        <div class="relative w-64 h-64 md:w-80 md:h-80">
+                            <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-purple-500/20 rounded-full animate-pulse"></div>
+                            <div class="absolute inset-4 glass-card rounded-2xl flex items-center justify-center transform rotate-6 border border-white/5">
+                                <i data-lucide="brain" class="w-24 h-24 text-slate-600/50"></i>
+                            </div>
+                            <div class="absolute inset-4 glass-card rounded-2xl flex items-center justify-center transform -rotate-6 bg-slate-950/80 border border-white/10">
+                                <div class="text-center">
+                                    <div class="w-20 h-20 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-full mx-auto mb-4 flex items-center justify-center">
+                                        <span class="text-3xl font-bold text-white">VJ</span>
+                                    </div>
+                                    <h3 class="font-bold text-white">Varshika Jain</h3>
+                                    <p class="text-xs text-slate-400">Tech Enthusiast</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold mb-4 flex items-center justify-center gap-3">
+                        <i data-lucide="briefcase" class="text-purple-400"></i>
+                        Experience
+                    </h2>
+                    <p class="text-slate-400">My professional journey and leadership roles.</p>
+                </div>
+
+                <div class="max-w-4xl mx-auto space-y-8">
+                    <!-- Experience Item 1 -->
+                    <div class="glass-card p-8 rounded-2xl border border-white/5 hover:border-cyan-500/30 transition-all group">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-lg bg-blue-900/30 flex items-center justify-center text-blue-400">
+                                    <i data-lucide="building-2"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-slate-100 group-hover:text-cyan-400 transition-colors">PayPal</h3>
+                                    <p class="text-slate-400">Software Engineering Intern</p>
+                                </div>
+                            </div>
+                            <span class="px-3 py-1 text-xs font-mono rounded-full bg-white/5 border border-white/10">Summer 2024</span>
+                        </div>
+                        <ul class="list-disc list-inside text-slate-400 space-y-2 ml-4">
+                            <li>Collaborated with cross-functional teams to develop robust payment solutions.</li>
+                            <li>Optimized backend queries improving data retrieval latency by 20%.</li>
+                            <li>Engaged in code reviews and agile methodologies.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Experience Item 2 -->
+                    <div class="glass-card p-8 rounded-2xl border border-white/5 hover:border-purple-500/30 transition-all group">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-lg bg-purple-900/30 flex items-center justify-center text-purple-400">
+                                    <i data-lucide="users"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-slate-100 group-hover:text-purple-400 transition-colors">E-Cell VIT</h3>
+                                    <p class="text-slate-400">Core Committee Member</p>
+                                </div>
+                            </div>
+                            <span class="px-3 py-1 text-xs font-mono rounded-full bg-white/5 border border-white/10">2023 - Present</span>
+                        </div>
+                        <ul class="list-disc list-inside text-slate-400 space-y-2 ml-4">
+                            <li>Organized flagship entrepreneurial summits attending by 500+ students.</li>
+                            <li>Led marketing initiatives and fostered a community of student founders.</li>
+                            <li>Managed logistics and corporate partnerships for events.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-20 bg-slate-900/50">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold mb-4 flex items-center justify-center gap-3">
+                        <i data-lucide="cpu" class="text-cyan-400"></i>
+                        Tech Stack
+                    </h2>
+                    <p class="text-slate-400">Tools and technologies I work with.</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Data Science -->
+                    <div class="glass-card p-6 rounded-2xl hover:bg-white/5 transition-all">
+                        <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 mb-4">
+                            <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-4">Data Science</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 text-xs bg-slate-800 rounded-full text-slate-300">Python</span>
+                            <span class="px-3 py-1 text-xs bg-slate-800 rounded-full text-slate-300">Pandas</span>
+                            <span class="px-3 py-1 text-xs bg-slate-800 rounded-full text-slate-300">TensorFlow</span>
+                            <span class="px-3 py-1 text-xs bg-slate-800 rounded-full text-slate-300">SQL</span>
+                            <span class="px-3 py-1 text-xs bg-slate-800 rounded-full text-slate-300">Jupyter</span>
+                        </div>
+                    </div>
+
+                    <!-- Web Dev -->
+                    <div class="glass-card p-6 rounded-2xl hover:bg-white/5 transition-all">
+                        <div class="w-10 h-10 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 mb-4">
+                            <i data-lucide="globe" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-4">Web Development</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 text-xs bg-slate-800 rounded-full text-slate-300">React</span>
+                            <span class="px-3 py-1 text-xs bg-slate-800 rounded-full text-slate-300">HTML/CSS</span>
+                            <span class="px-3 py-1 text-xs bg-slate-800 rounded-full text-slate-300">Tailwind</span>
+                            <span class="px-3 py-1 text-xs bg-slate-800 rounded-full text-slate-300">JavaScript</span>
+                            <span class="px-3 py-1 text-xs bg-slate-800 rounded-full text-slate-300">Node.js</span>
+                        </div>
+                    </div>
+
+                    <!-- Tools/Others -->
+                    <div class="glass-card p-6 rounded-2xl hover:bg-white/5 transition-all">
+                        <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 mb-4">
+                            <i data-lucide="terminal" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-4">Tools & Others</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 text-xs bg-slate-800 rounded-full text-slate-300">Git</span>
+                            <span class="px-3 py-1 text-xs bg-slate-800 rounded-full text-slate-300">VS Code</span>
+                            <span class="px-3 py-1 text-xs bg-slate-800 rounded-full text-slate-300">Figma</span>
+                            <span class="px-3 py-1 text-xs bg-slate-800 rounded-full text-slate-300">AWS</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20">
+            <div class="container mx-auto px-6 max-w-4xl">
+                <div class="glass-card rounded-3xl p-8 md:p-12 text-center border border-white/10 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 to-purple-600"></div>
+                    
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6">Let's Build Something Amazing</h2>
+                    <p class="text-slate-400 mb-8 max-w-2xl mx-auto">
+                        Whether you have a question, a project idea, or just want to say hi, I'd love to hear from you.
+                    </p>
+                    
+                    <div class="flex flex-col md:flex-row justify-center gap-6">
+                        <a href="mailto:contact@varshika.com" class="flex items-center justify-center gap-2 px-8 py-4 bg-white text-slate-950 font-bold rounded-full hover:bg-slate-200 transition-colors">
+                            <i data-lucide="mail" class="w-5 h-5"></i>
+                            Send Email
+                        </a>
+                        <a href="https://www.linkedin.com/in/varshika-jain-a81109329/" target="_blank" class="flex items-center justify-center gap-2 px-8 py-4 bg-transparent border border-white/20 text-white font-bold rounded-full hover:bg-white/10 transition-colors">
+                            <i data-lucide="linkedin" class="w-5 h-5"></i>
+                            LinkedIn Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-white/5 bg-slate-950">
+        <div class="container mx-auto px-6 text-center text-slate-500 text-sm">
+            <p>&copy; 2024 Varshika Jain. All rights reserved.</p>
+            <p class="mt-2 text-xs">Built with creativity & code.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('nav-glass', 'py-4');
+                navbar.classList.remove('py-6');
+            } else {
+                navbar.classList.remove('nav-glass', 'py-4');
+                navbar.classList.add('py-6');
+            }
+        });
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function toggleMenu() {
+            mobileMenu.classList.toggle('translate-x-full');
+            document.body.classList.toggle('overflow-hidden');
+        }
+
+        mobileMenuBtn.addEventListener('click', toggleMenu);
+        closeMenuBtn.addEventListener('click', toggleMenu);
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', toggleMenu);
+        });
+
+        // Scroll Reveal Animation (Simple version without external lib)
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                }
+            });
+        }, observerOptions);
+
+        // Add reveal classes to sections
+        document.querySelectorAll('section > div').forEach(el => {
+            el.classList.add('transition-all', 'duration-1000', 'opacity-0', 'translate-y-10');
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
