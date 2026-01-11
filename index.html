@@ -21,12 +21,16 @@
                     },
                     colors: {
                         slate: {
-                            950: '#020617',
+                            850: '#0f172a',
+                            900: '#020617',
+                            950: '#000000', // Darker base
                         }
                     },
                     animation: {
-                        'blob': 'blob 7s infinite',
+                        'blob': 'blob 10s infinite',
                         'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'gradient-x': 'gradient-x 15s ease infinite',
                     },
                     keyframes: {
                         blob: {
@@ -38,7 +42,17 @@
                         float: {
                             '0%, 100%': { transform: 'translateY(0)' },
                             '50%': { transform: 'translateY(-20px)' },
-                        }
+                        },
+                        'gradient-x': {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            },
+                        },
                     }
                 }
             }
@@ -48,29 +62,55 @@
     <style>
         /* Custom scrollbar */
         ::-webkit-scrollbar {
-            width: 10px;
+            width: 8px;
         }
         ::-webkit-scrollbar-track {
             background: #020617;
         }
         ::-webkit-scrollbar-thumb {
-            background: #334155;
-            border-radius: 5px;
+            background: #475569;
+            border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #475569;
+            background: #64748b;
         }
         
         .glass-card {
             background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.15);
         }
         
         .nav-glass {
-            background: rgba(2, 6, 23, 0.8);
-            backdrop-filter: blur(12px);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #22d3ee, #a855f7, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: gradient-x 5s linear infinite;
         }
     </style>
 </head>
@@ -78,155 +118,211 @@
 
     <!-- Background Effects -->
     <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-        <div class="absolute top-[-10%] left-[-10%] w-[40rem] h-[40rem] rounded-full bg-purple-600/20 blur-[100px] animate-blob"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-[35rem] h-[35rem] rounded-full bg-cyan-600/20 blur-[100px] animate-blob animation-delay-2000"></div>
-        <div class="absolute top-[40%] left-[40%] w-[30rem] h-[30rem] rounded-full bg-blue-600/20 blur-[100px] animate-blob animation-delay-4000"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40rem] h-[40rem] rounded-full bg-purple-600/10 blur-[120px] animate-blob"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[35rem] h-[35rem] rounded-full bg-cyan-600/10 blur-[120px] animate-blob animation-delay-2000"></div>
+        <div class="absolute top-[40%] left-[40%] w-[30rem] h-[30rem] rounded-full bg-blue-600/10 blur-[120px] animate-blob animation-delay-4000"></div>
         <!-- Grid Overlay -->
-        <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:32px_32px]"></div>
     </div>
 
     <!-- Navigation -->
     <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 py-6">
         <div class="container mx-auto px-6 flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-500">
-                VJ.
+            <a href="#" class="text-2xl font-bold tracking-tighter hover:scale-105 transition-transform">
+                <span class="text-cyan-400">V</span>J<span class="text-purple-500">.</span>
             </a>
             
             <!-- Desktop Menu -->
             <div class="hidden md:flex items-center space-x-8">
                 <a href="#home" class="nav-link text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors">Home</a>
                 <a href="#about" class="nav-link text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors">About</a>
-                <a href="#experience" class="nav-link text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors">Experience</a>
-                <a href="#skills" class="nav-link text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors">Skills</a>
+                <a href="#projects" class="nav-link text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors">Projects</a>
+                <a href="#education" class="nav-link text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors">Education</a>
                 <a href="#contact" class="nav-link text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors">Contact</a>
             </div>
 
-            <a href="https://www.linkedin.com/in/varshika-jain-a81109329/" target="_blank" class="hidden md:flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-2 rounded-full text-sm transition-all group">
+            <a href="https://www.linkedin.com/in/varshika-jain-a81109329/" target="_blank" class="hidden md:flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 px-5 py-2.5 rounded-full text-sm font-medium transition-all group hover:border-cyan-500/50">
                 <i data-lucide="linkedin" class="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform"></i>
                 <span>Connect</span>
             </a>
 
             <!-- Mobile Menu Button -->
-            <button id="mobile-menu-btn" class="md:hidden text-slate-200">
+            <button id="mobile-menu-btn" class="md:hidden text-slate-200 p-2 hover:bg-white/10 rounded-lg transition-colors">
                 <i data-lucide="menu"></i>
             </button>
         </div>
 
         <!-- Mobile Menu Overlay -->
-        <div id="mobile-menu" class="fixed inset-0 bg-slate-950/95 backdrop-blur-xl z-40 transform translate-x-full transition-transform duration-300 md:hidden flex flex-col justify-center items-center space-y-8">
-            <button id="close-menu-btn" class="absolute top-6 right-6 text-slate-400 hover:text-white">
+        <div id="mobile-menu" class="fixed inset-0 bg-black/95 backdrop-blur-2xl z-40 transform translate-x-full transition-transform duration-300 md:hidden flex flex-col justify-center items-center space-y-8">
+            <button id="close-menu-btn" class="absolute top-6 right-6 text-slate-400 hover:text-white p-2">
                 <i data-lucide="x" class="w-8 h-8"></i>
             </button>
             <a href="#home" class="mobile-link text-2xl font-bold text-slate-300 hover:text-cyan-400">Home</a>
             <a href="#about" class="mobile-link text-2xl font-bold text-slate-300 hover:text-cyan-400">About</a>
-            <a href="#experience" class="mobile-link text-2xl font-bold text-slate-300 hover:text-cyan-400">Experience</a>
-            <a href="#skills" class="mobile-link text-2xl font-bold text-slate-300 hover:text-cyan-400">Skills</a>
+            <a href="#projects" class="mobile-link text-2xl font-bold text-slate-300 hover:text-cyan-400">Projects</a>
+            <a href="#education" class="mobile-link text-2xl font-bold text-slate-300 hover:text-cyan-400">Education</a>
             <a href="#contact" class="mobile-link text-2xl font-bold text-slate-300 hover:text-cyan-400">Contact</a>
         </div>
     </nav>
 
     <main class="relative z-10">
         <!-- Hero Section -->
-        <section id="home" class="min-h-screen flex items-center pt-20">
+        <section id="home" class="min-h-screen flex items-center pt-20 relative">
             <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-                <div class="space-y-6 order-2 md:order-1">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-sm font-mono">
-                        <i data-lucide="terminal" class="w-3 h-3"></i>
-                        <span>Hello World</span>
+                <div class="space-y-8 order-2 md:order-1">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/5 border border-cyan-500/20 text-cyan-400 text-sm font-mono hover:bg-cyan-500/10 transition-colors cursor-default">
+                        <span class="relative flex h-2 w-2">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+                        </span>
+                        <span>Available for opportunities</span>
                     </div>
-                    <h1 class="text-4xl md:text-6xl font-bold leading-tight">
-                        Hi, I'm <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">Varshika Jain</span>
-                    </h1>
-                    <p class="text-xl text-slate-400 max-w-lg">
-                        A passionate <span class="text-slate-200 font-semibold">Data Scientist</span> & <span class="text-slate-200 font-semibold">Entrepreneur</span> building the future with code and data. Currently crafting digital experiences.
+                    
+                    <div class="space-y-4">
+                        <h1 class="text-5xl md:text-7xl font-bold leading-tight tracking-tight">
+                            Hi, I'm <br />
+                            <span class="gradient-text">Varshika Jain</span>
+                        </h1>
+                        <p class="text-xl md:text-2xl text-slate-400 font-light h-8">
+                            I am a <span id="typing-text" class="text-slate-200 font-medium typing-cursor"></span>
+                        </p>
+                    </div>
+
+                    <p class="text-lg text-slate-400 max-w-lg leading-relaxed">
+                        Transforming complex data into actionable insights and building web experiences that matter. 
                     </p>
+                    
                     <div class="flex flex-wrap gap-4 pt-4">
-                        <a href="#contact" class="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-bold rounded-full transition-all flex items-center gap-2">
+                        <a href="#contact" class="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold rounded-full transition-all shadow-lg shadow-cyan-500/25 flex items-center gap-2 hover:-translate-y-1">
                             <i data-lucide="mail" class="w-4 h-4"></i>
                             Get in Touch
                         </a>
-                        <a href="#experience" class="px-6 py-3 glass-card hover:bg-white/10 rounded-full font-medium transition-all flex items-center gap-2">
+                        <a href="#projects" class="px-8 py-4 glass-card hover:bg-white/10 rounded-full font-medium transition-all flex items-center gap-2 hover:-translate-y-1 group">
                             View Work
-                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                         </a>
                     </div>
                 </div>
                 
-                <div class="order-1 md:order-2 flex justify-center animate-float">
-                    <div class="relative w-72 h-72 md:w-96 md:h-96">
-                        <!-- Abstract Code Visual -->
-                        <div class="absolute inset-0 bg-gradient-to-tr from-cyan-500 to-purple-600 rounded-full blur-[60px] opacity-40"></div>
-                        <div class="relative z-10 w-full h-full glass-card rounded-2xl border border-white/10 p-6 flex flex-col gap-4 transform rotate-3 hover:rotate-0 transition-all duration-500">
-                            <div class="flex gap-2">
-                                <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                <div class="order-1 md:order-2 flex justify-center animate-float perspective-1000">
+                    <div class="relative w-72 h-72 md:w-96 md:h-96 group">
+                        <!-- Holographic Card Effect -->
+                        <div class="absolute inset-0 bg-gradient-to-tr from-cyan-500 to-purple-600 rounded-2xl blur-[40px] opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
+                        <div class="relative z-10 w-full h-full glass-card rounded-2xl border border-white/10 p-8 flex flex-col justify-between transform transition-all duration-500 group-hover:rotate-y-12 group-hover:rotate-x-12 preserve-3d">
+                            
+                            <!-- Card Header -->
+                            <div class="flex justify-between items-center border-b border-white/5 pb-4">
+                                <div class="flex gap-2">
+                                    <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                                    <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                                    <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+                                </div>
+                                <div class="text-xs font-mono text-slate-500">developer.py</div>
                             </div>
-                            <div class="flex-1 font-mono text-sm text-slate-400 space-y-2 overflow-hidden">
-                                <p><span class="text-purple-400">class</span> <span class="text-yellow-400">Innovator</span> {</p>
-                                <p class="pl-4"><span class="text-cyan-400">constructor</span>() {</p>
-                                <p class="pl-8">this.name = <span class="text-green-400">'Varshika'</span>;</p>
-                                <p class="pl-8">this.skills = [<span class="text-green-400">'Data Science'</span>, <span class="text-green-400">'Web Dev'</span>];</p>
-                                <p class="pl-8">this.passion = <span class="text-green-400">'Problem Solving'</span>;</p>
-                                <p class="pl-4">}</p>
-                                <p class="pl-4"><span class="text-blue-400">solve</span>(problem) {</p>
-                                <p class="pl-8"><span class="text-purple-400">return</span> <span class="text-cyan-400">new</span> Solution(problem);</p>
-                                <p class="pl-4">}</p>
-                                <p>}</p>
+
+                            <!-- Card Content -->
+                            <div class="font-mono text-sm space-y-3 pt-4">
+                                <div class="flex">
+                                    <span class="text-slate-600 w-8 text-right mr-4 select-none">1</span>
+                                    <span class="text-purple-400">def</span> <span class="text-blue-400">innovate</span>():
+                                </div>
+                                <div class="flex">
+                                    <span class="text-slate-600 w-8 text-right mr-4 select-none">2</span>
+                                    <span class="text-slate-400 ml-4">skills = [</span>
+                                </div>
+                                <div class="flex">
+                                    <span class="text-slate-600 w-8 text-right mr-4 select-none">3</span>
+                                    <span class="text-green-400 ml-8">'Data Science'</span><span class="text-slate-400">,</span>
+                                </div>
+                                <div class="flex">
+                                    <span class="text-slate-600 w-8 text-right mr-4 select-none">4</span>
+                                    <span class="text-green-400 ml-8">'Full Stack'</span><span class="text-slate-400">,</span>
+                                </div>
+                                <div class="flex">
+                                    <span class="text-slate-600 w-8 text-right mr-4 select-none">5</span>
+                                    <span class="text-green-400 ml-8">'Entrepreneurship'</span>
+                                </div>
+                                <div class="flex">
+                                    <span class="text-slate-600 w-8 text-right mr-4 select-none">6</span>
+                                    <span class="text-slate-400 ml-4">]</span>
+                                </div>
+                                <div class="flex">
+                                    <span class="text-slate-600 w-8 text-right mr-4 select-none">7</span>
+                                    <span class="text-purple-400 ml-4">return</span> <span class="text-cyan-400">impact</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4 pt-4 border-t border-white/5 flex justify-between items-center">
+                                <span class="text-xs text-slate-500">Ready to compile...</span>
+                                <i data-lucide="play-circle" class="w-5 h-5 text-green-500 animate-pulse"></i>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-slate-500">
-                <i data-lucide="chevron-down" class="w-6 h-6"></i>
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-slate-500 cursor-pointer hover:text-cyan-400 transition-colors" onclick="document.getElementById('about').scrollIntoView({behavior: 'smooth'})">
+                <i data-lucide="chevron-down" class="w-8 h-8"></i>
             </div>
         </section>
 
         <!-- About Section -->
-        <section id="about" class="py-20 bg-slate-900/50">
+        <section id="about" class="py-24 relative">
             <div class="container mx-auto px-6">
-                <div class="flex flex-col md:flex-row gap-12 items-center">
-                    <div class="md:w-1/2">
-                        <h2 class="text-3xl font-bold mb-6 flex items-center gap-3">
-                            <i data-lucide="user" class="text-cyan-400"></i>
-                            About Me
-                        </h2>
-                        <p class="text-slate-400 leading-relaxed mb-4">
-                            I am a tech enthusiast and a student with a keen interest in the intersection of <span class="text-cyan-400">Data Science</span> and <span class="text-purple-400">Web Development</span>. My journey is driven by curiosity and the desire to build scalable solutions that make a real-world impact.
-                        </p>
-                        <p class="text-slate-400 leading-relaxed mb-6">
-                            Beyond coding, I embrace the <span class="text-yellow-400">entrepreneurial spirit</span>, constantly looking for opportunities to innovate and lead. Whether it's analyzing complex datasets or crafting intuitive user interfaces, I bring dedication and creativity to the table.
-                        </p>
-                        
-                        <div class="grid grid-cols-2 gap-4 mt-8">
-                            <div class="p-4 glass-card rounded-xl">
-                                <h3 class="text-2xl font-bold text-white mb-1">5+</h3>
-                                <p class="text-sm text-slate-400">Projects Completed</p>
-                            </div>
-                            <div class="p-4 glass-card rounded-xl">
-                                <h3 class="text-2xl font-bold text-white mb-1">2+</h3>
-                                <p class="text-sm text-slate-400">Years Experience</p>
+                <div class="glass-card rounded-3xl p-8 md:p-12 border border-white/5 bg-slate-900/40">
+                    <div class="flex flex-col md:flex-row gap-12 items-center">
+                        <div class="md:w-1/2 space-y-6">
+                            <h2 class="text-3xl font-bold flex items-center gap-3">
+                                <span class="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400">
+                                    <i data-lucide="user"></i>
+                                </span>
+                                About Me
+                            </h2>
+                            <p class="text-slate-300 leading-relaxed text-lg">
+                                I am a forward-thinking student and tech enthusiast bridging the gap between <span class="text-cyan-400 font-semibold">Data Science</span> and <span class="text-purple-400 font-semibold">Web Development</span>. 
+                            </p>
+                            <p class="text-slate-400 leading-relaxed">
+                                Driven by the <span class="text-yellow-400 font-semibold">entrepreneurial spirit</span>, I don't just write code—I build solutions. My passion lies in leveraging data to solve real-world problems and creating intuitive digital products that users love.
+                            </p>
+                            
+                            <div class="flex gap-4 pt-4">
+                                <div class="px-4 py-2 rounded-lg bg-slate-800/50 border border-slate-700 text-sm text-slate-300 flex items-center gap-2">
+                                    <i data-lucide="map-pin" class="w-4 h-4 text-red-400"></i> Based in India
+                                </div>
+                                <div class="px-4 py-2 rounded-lg bg-slate-800/50 border border-slate-700 text-sm text-slate-300 flex items-center gap-2">
+                                    <i data-lucide="coffee" class="w-4 h-4 text-yellow-400"></i> Open to Coffee
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="md:w-1/2 flex justify-center relative">
-                        <!-- Abstract shapes representation -->
-                        <div class="relative w-64 h-64 md:w-80 md:h-80">
-                            <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-purple-500/20 rounded-full animate-pulse"></div>
-                            <div class="absolute inset-4 glass-card rounded-2xl flex items-center justify-center transform rotate-6 border border-white/5">
-                                <i data-lucide="brain" class="w-24 h-24 text-slate-600/50"></i>
-                            </div>
-                            <div class="absolute inset-4 glass-card rounded-2xl flex items-center justify-center transform -rotate-6 bg-slate-950/80 border border-white/10">
-                                <div class="text-center">
-                                    <div class="w-20 h-20 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-full mx-auto mb-4 flex items-center justify-center">
-                                        <span class="text-3xl font-bold text-white">VJ</span>
-                                    </div>
-                                    <h3 class="font-bold text-white">Varshika Jain</h3>
-                                    <p class="text-xs text-slate-400">Tech Enthusiast</p>
+                        
+                        <div class="md:w-1/2 grid grid-cols-2 gap-4">
+                            <div class="glass-card p-6 rounded-2xl text-center hover:-translate-y-2 transition-transform duration-300 border-t-2 border-t-cyan-500/50">
+                                <div class="w-12 h-12 mx-auto bg-cyan-500/10 rounded-full flex items-center justify-center text-cyan-400 mb-3">
+                                    <i data-lucide="code-2"></i>
                                 </div>
+                                <h3 class="font-bold text-xl text-white">Developer</h3>
+                                <p class="text-sm text-slate-500 mt-1">Clean & Modern Code</p>
+                            </div>
+                            <div class="glass-card p-6 rounded-2xl text-center hover:-translate-y-2 transition-transform duration-300 border-t-2 border-t-purple-500/50 mt-8">
+                                <div class="w-12 h-12 mx-auto bg-purple-500/10 rounded-full flex items-center justify-center text-purple-400 mb-3">
+                                    <i data-lucide="database"></i>
+                                </div>
+                                <h3 class="font-bold text-xl text-white">Analyst</h3>
+                                <p class="text-sm text-slate-500 mt-1">Data Driven Insights</p>
+                            </div>
+                            <div class="glass-card p-6 rounded-2xl text-center hover:-translate-y-2 transition-transform duration-300 border-t-2 border-t-blue-500/50">
+                                <div class="w-12 h-12 mx-auto bg-blue-500/10 rounded-full flex items-center justify-center text-blue-400 mb-3">
+                                    <i data-lucide="rocket"></i>
+                                </div>
+                                <h3 class="font-bold text-xl text-white">Founder</h3>
+                                <p class="text-sm text-slate-500 mt-1">Startup Mindset</p>
+                            </div>
+                            <div class="glass-card p-6 rounded-2xl text-center hover:-translate-y-2 transition-transform duration-300 border-t-2 border-t-green-500/50 mt-8">
+                                <div class="w-12 h-12 mx-auto bg-green-500/10 rounded-full flex items-center justify-center text-green-400 mb-3">
+                                    <i data-lucide="users"></i>
+                                </div>
+                                <h3 class="font-bold text-xl text-white">Leader</h3>
+                                <p class="text-sm text-slate-500 mt-1">Community Building</p>
                             </div>
                         </div>
                     </div>
@@ -234,116 +330,190 @@
             </div>
         </section>
 
-        <!-- Experience Section -->
-        <section id="experience" class="py-20">
+        <!-- Projects Section (Replaces Fake Experience) -->
+        <section id="projects" class="py-24">
             <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl font-bold mb-4 flex items-center justify-center gap-3">
-                        <i data-lucide="briefcase" class="text-purple-400"></i>
-                        Experience
+                <div class="text-center mb-16 space-y-4">
+                    <h2 class="text-3xl md:text-5xl font-bold flex items-center justify-center gap-3">
+                        <span class="gradient-text">Featured Projects</span>
                     </h2>
-                    <p class="text-slate-400">My professional journey and leadership roles.</p>
+                    <p class="text-slate-400 max-w-2xl mx-auto">
+                        A showcase of my technical projects, ranging from data analysis models to full-stack web applications.
+                    </p>
                 </div>
 
-                <div class="max-w-4xl mx-auto space-y-8">
-                    <!-- Experience Item 1 -->
-                    <div class="glass-card p-8 rounded-2xl border border-white/5 hover:border-cyan-500/30 transition-all group">
-                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 rounded-lg bg-blue-900/30 flex items-center justify-center text-blue-400">
-                                    <i data-lucide="building-2"></i>
-                                </div>
-                                <div>
-                                    <h3 class="text-xl font-bold text-slate-100 group-hover:text-cyan-400 transition-colors">PayPal</h3>
-                                    <p class="text-slate-400">Software Engineering Intern</p>
-                                </div>
-                            </div>
-                            <span class="px-3 py-1 text-xs font-mono rounded-full bg-white/5 border border-white/10">Summer 2024</span>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Project 1 -->
+                    <div class="glass-card rounded-2xl overflow-hidden hover:shadow-cyan-500/10 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group">
+                        <div class="h-48 bg-gradient-to-br from-slate-800 to-slate-900 relative p-6 flex items-center justify-center overflow-hidden">
+                            <div class="absolute inset-0 bg-grid-white/[0.05]"></div>
+                            <i data-lucide="bar-chart-2" class="w-16 h-16 text-cyan-500/50 group-hover:scale-110 transition-transform duration-500"></i>
+                            <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 to-blue-500"></div>
                         </div>
-                        <ul class="list-disc list-inside text-slate-400 space-y-2 ml-4">
-                            <li>Collaborated with cross-functional teams to develop robust payment solutions.</li>
-                            <li>Optimized backend queries improving data retrieval latency by 20%.</li>
-                            <li>Engaged in code reviews and agile methodologies.</li>
-                        </ul>
+                        <div class="p-6 space-y-4">
+                            <h3 class="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">Predictive Analytics Dashboard</h3>
+                            <p class="text-slate-400 text-sm line-clamp-3">
+                                A comprehensive data dashboard that visualizes complex datasets and predicts future trends using machine learning algorithms. Built with Python and Streamlit.
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-slate-800 text-xs rounded text-cyan-300">Python</span>
+                                <span class="px-2 py-1 bg-slate-800 text-xs rounded text-cyan-300">ML</span>
+                                <span class="px-2 py-1 bg-slate-800 text-xs rounded text-cyan-300">Data Viz</span>
+                            </div>
+                            <div class="pt-4 flex justify-between items-center">
+                                <a href="#" class="text-sm font-medium text-slate-300 hover:text-white flex items-center gap-1">
+                                    <i data-lucide="github" class="w-4 h-4"></i> Code
+                                </a>
+                                <a href="#" class="text-sm font-medium text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
+                                    Demo <i data-lucide="external-link" class="w-4 h-4"></i>
+                                </a>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Experience Item 2 -->
-                    <div class="glass-card p-8 rounded-2xl border border-white/5 hover:border-purple-500/30 transition-all group">
-                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 rounded-lg bg-purple-900/30 flex items-center justify-center text-purple-400">
-                                    <i data-lucide="users"></i>
-                                </div>
-                                <div>
-                                    <h3 class="text-xl font-bold text-slate-100 group-hover:text-purple-400 transition-colors">E-Cell VIT</h3>
-                                    <p class="text-slate-400">Core Committee Member</p>
-                                </div>
-                            </div>
-                            <span class="px-3 py-1 text-xs font-mono rounded-full bg-white/5 border border-white/10">2023 - Present</span>
+                    <!-- Project 2 -->
+                    <div class="glass-card rounded-2xl overflow-hidden hover:shadow-purple-500/10 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group">
+                        <div class="h-48 bg-gradient-to-br from-slate-800 to-slate-900 relative p-6 flex items-center justify-center overflow-hidden">
+                            <div class="absolute inset-0 bg-grid-white/[0.05]"></div>
+                            <i data-lucide="shopping-bag" class="w-16 h-16 text-purple-500/50 group-hover:scale-110 transition-transform duration-500"></i>
+                            <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-purple-400 to-pink-500"></div>
                         </div>
-                        <ul class="list-disc list-inside text-slate-400 space-y-2 ml-4">
-                            <li>Organized flagship entrepreneurial summits attending by 500+ students.</li>
-                            <li>Led marketing initiatives and fostered a community of student founders.</li>
-                            <li>Managed logistics and corporate partnerships for events.</li>
-                        </ul>
+                        <div class="p-6 space-y-4">
+                            <h3 class="text-xl font-bold text-white group-hover:text-purple-400 transition-colors">E-Commerce Platform</h3>
+                            <p class="text-slate-400 text-sm line-clamp-3">
+                                A modern, responsive e-commerce web application with cart functionality, user authentication, and payment gateway integration.
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-slate-800 text-xs rounded text-purple-300">React</span>
+                                <span class="px-2 py-1 bg-slate-800 text-xs rounded text-purple-300">Node.js</span>
+                                <span class="px-2 py-1 bg-slate-800 text-xs rounded text-purple-300">MongoDB</span>
+                            </div>
+                            <div class="pt-4 flex justify-between items-center">
+                                <a href="#" class="text-sm font-medium text-slate-300 hover:text-white flex items-center gap-1">
+                                    <i data-lucide="github" class="w-4 h-4"></i> Code
+                                </a>
+                                <a href="#" class="text-sm font-medium text-purple-400 hover:text-purple-300 flex items-center gap-1">
+                                    Demo <i data-lucide="external-link" class="w-4 h-4"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 3 -->
+                    <div class="glass-card rounded-2xl overflow-hidden hover:shadow-blue-500/10 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group">
+                        <div class="h-48 bg-gradient-to-br from-slate-800 to-slate-900 relative p-6 flex items-center justify-center overflow-hidden">
+                            <div class="absolute inset-0 bg-grid-white/[0.05]"></div>
+                            <i data-lucide="bot" class="w-16 h-16 text-blue-500/50 group-hover:scale-110 transition-transform duration-500"></i>
+                            <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-cyan-500"></div>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <h3 class="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">AI Chat Assistant</h3>
+                            <p class="text-slate-400 text-sm line-clamp-3">
+                                An intelligent chatbot application capable of answering queries and assisting with scheduling, powered by NLP techniques.
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-slate-800 text-xs rounded text-blue-300">Python</span>
+                                <span class="px-2 py-1 bg-slate-800 text-xs rounded text-blue-300">NLP</span>
+                                <span class="px-2 py-1 bg-slate-800 text-xs rounded text-blue-300">API</span>
+                            </div>
+                            <div class="pt-4 flex justify-between items-center">
+                                <a href="#" class="text-sm font-medium text-slate-300 hover:text-white flex items-center gap-1">
+                                    <i data-lucide="github" class="w-4 h-4"></i> Code
+                                </a>
+                                <a href="#" class="text-sm font-medium text-blue-400 hover:text-blue-300 flex items-center gap-1">
+                                    Demo <i data-lucide="external-link" class="w-4 h-4"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section id="education" class="py-24 bg-slate-900/30">
+            <div class="container mx-auto px-6 max-w-4xl">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold mb-4 flex items-center justify-center gap-3">
+                        <i data-lucide="graduation-cap" class="text-pink-400"></i>
+                        Education
+                    </h2>
+                </div>
+
+                <div class="relative border-l border-slate-700 ml-3 md:ml-6 space-y-12">
+                    <!-- Education Item -->
+                    <div class="relative pl-8 md:pl-12">
+                        <div class="absolute -left-[9px] md:-left-[11px] top-1 w-5 h-5 md:w-6 md:h-6 rounded-full bg-slate-900 border-4 border-pink-500"></div>
+                        <div class="glass-card p-6 md:p-8 rounded-2xl hover:bg-white/5 transition-all">
+                            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-2">
+                                <h3 class="text-xl md:text-2xl font-bold text-white">Bachelor's Degree</h3>
+                                <span class="px-3 py-1 text-xs font-mono rounded-full bg-pink-500/10 border border-pink-500/20 text-pink-400">Present</span>
+                            </div>
+                            <h4 class="text-lg text-pink-400 mb-2">Computer Science & Data Analytics</h4>
+                            <p class="text-slate-400">
+                                Focusing on advanced algorithms, statistical modelling, and software engineering principles. Active member of technical clubs and student societies.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Skills Section -->
-        <section id="skills" class="py-20 bg-slate-900/50">
+        <section id="skills" class="py-24">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-16">
                     <h2 class="text-3xl font-bold mb-4 flex items-center justify-center gap-3">
                         <i data-lucide="cpu" class="text-cyan-400"></i>
                         Tech Stack
                     </h2>
-                    <p class="text-slate-400">Tools and technologies I work with.</p>
+                    <p class="text-slate-400">My arsenal of tools and technologies.</p>
                 </div>
 
                 <div class="grid md:grid-cols-3 gap-8">
                     <!-- Data Science -->
-                    <div class="glass-card p-6 rounded-2xl hover:bg-white/5 transition-all">
-                        <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 mb-4">
-                            <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+                    <div class="glass-card p-6 rounded-2xl hover:bg-white/5 transition-all group">
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 mb-6 group-hover:scale-110 transition-transform">
+                            <i data-lucide="bar-chart-3" class="w-6 h-6"></i>
                         </div>
-                        <h3 class="text-lg font-bold mb-4">Data Science</h3>
+                        <h3 class="text-xl font-bold mb-4 text-white">Data Science</h3>
                         <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 text-xs bg-slate-800 rounded-full text-slate-300">Python</span>
-                            <span class="px-3 py-1 text-xs bg-slate-800 rounded-full text-slate-300">Pandas</span>
-                            <span class="px-3 py-1 text-xs bg-slate-800 rounded-full text-slate-300">TensorFlow</span>
-                            <span class="px-3 py-1 text-xs bg-slate-800 rounded-full text-slate-300">SQL</span>
-                            <span class="px-3 py-1 text-xs bg-slate-800 rounded-full text-slate-300">Jupyter</span>
+                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">Python</span>
+                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">Pandas</span>
+                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">NumPy</span>
+                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">TensorFlow</span>
+                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">SQL</span>
+                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">Tableau</span>
                         </div>
                     </div>
 
                     <!-- Web Dev -->
-                    <div class="glass-card p-6 rounded-2xl hover:bg-white/5 transition-all">
-                        <div class="w-10 h-10 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 mb-4">
-                            <i data-lucide="globe" class="w-5 h-5"></i>
+                    <div class="glass-card p-6 rounded-2xl hover:bg-white/5 transition-all group">
+                        <div class="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 mb-6 group-hover:scale-110 transition-transform">
+                            <i data-lucide="globe" class="w-6 h-6"></i>
                         </div>
-                        <h3 class="text-lg font-bold mb-4">Web Development</h3>
+                        <h3 class="text-xl font-bold mb-4 text-white">Web Development</h3>
                         <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 text-xs bg-slate-800 rounded-full text-slate-300">React</span>
-                            <span class="px-3 py-1 text-xs bg-slate-800 rounded-full text-slate-300">HTML/CSS</span>
-                            <span class="px-3 py-1 text-xs bg-slate-800 rounded-full text-slate-300">Tailwind</span>
-                            <span class="px-3 py-1 text-xs bg-slate-800 rounded-full text-slate-300">JavaScript</span>
-                            <span class="px-3 py-1 text-xs bg-slate-800 rounded-full text-slate-300">Node.js</span>
+                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">React</span>
+                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">JavaScript</span>
+                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">Tailwind CSS</span>
+                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">Node.js</span>
+                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">HTML5/CSS3</span>
                         </div>
                     </div>
 
                     <!-- Tools/Others -->
-                    <div class="glass-card p-6 rounded-2xl hover:bg-white/5 transition-all">
-                        <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 mb-4">
-                            <i data-lucide="terminal" class="w-5 h-5"></i>
+                    <div class="glass-card p-6 rounded-2xl hover:bg-white/5 transition-all group">
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400 mb-6 group-hover:scale-110 transition-transform">
+                            <i data-lucide="terminal" class="w-6 h-6"></i>
                         </div>
-                        <h3 class="text-lg font-bold mb-4">Tools & Others</h3>
+                        <h3 class="text-xl font-bold mb-4 text-white">Tools & Workflow</h3>
                         <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 text-xs bg-slate-800 rounded-full text-slate-300">Git</span>
-                            <span class="px-3 py-1 text-xs bg-slate-800 rounded-full text-slate-300">VS Code</span>
-                            <span class="px-3 py-1 text-xs bg-slate-800 rounded-full text-slate-300">Figma</span>
-                            <span class="px-3 py-1 text-xs bg-slate-800 rounded-full text-slate-300">AWS</span>
+                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">Git & GitHub</span>
+                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">VS Code</span>
+                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">Jupyter</span>
+                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">Figma</span>
+                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">Canva</span>
                         </div>
                     </div>
                 </div>
@@ -351,22 +521,24 @@
         </section>
 
         <!-- Contact Section -->
-        <section id="contact" class="py-20">
+        <section id="contact" class="py-24">
             <div class="container mx-auto px-6 max-w-4xl">
-                <div class="glass-card rounded-3xl p-8 md:p-12 text-center border border-white/10 relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 to-purple-600"></div>
+                <div class="glass-card rounded-3xl p-8 md:p-16 text-center border border-white/10 relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500"></div>
+                    <!-- Background Shine -->
+                    <div class="absolute inset-0 bg-gradient-to-tr from-cyan-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
                     
-                    <h2 class="text-3xl md:text-4xl font-bold mb-6">Let's Build Something Amazing</h2>
-                    <p class="text-slate-400 mb-8 max-w-2xl mx-auto">
-                        Whether you have a question, a project idea, or just want to say hi, I'd love to hear from you.
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white">Let's Build Something <span class="text-cyan-400">Amazing</span></h2>
+                    <p class="text-slate-400 mb-10 max-w-2xl mx-auto text-lg">
+                        I'm currently looking for new opportunities. Whether you have a question, a project idea, or just want to say hi, my inbox is always open.
                     </p>
                     
                     <div class="flex flex-col md:flex-row justify-center gap-6">
-                        <a href="mailto:contact@varshika.com" class="flex items-center justify-center gap-2 px-8 py-4 bg-white text-slate-950 font-bold rounded-full hover:bg-slate-200 transition-colors">
+                        <a href="mailto:contact@varshika.com" class="flex items-center justify-center gap-3 px-8 py-4 bg-white text-slate-950 font-bold rounded-full hover:bg-slate-200 transition-colors shadow-lg shadow-white/10 hover:shadow-white/20">
                             <i data-lucide="mail" class="w-5 h-5"></i>
-                            Send Email
+                            Say Hello
                         </a>
-                        <a href="https://www.linkedin.com/in/varshika-jain-a81109329/" target="_blank" class="flex items-center justify-center gap-2 px-8 py-4 bg-transparent border border-white/20 text-white font-bold rounded-full hover:bg-white/10 transition-colors">
+                        <a href="https://www.linkedin.com/in/varshika-jain-a81109329/" target="_blank" class="flex items-center justify-center gap-3 px-8 py-4 bg-transparent border border-white/20 text-white font-bold rounded-full hover:bg-white/10 transition-colors">
                             <i data-lucide="linkedin" class="w-5 h-5"></i>
                             LinkedIn Profile
                         </a>
@@ -378,9 +550,13 @@
 
     <!-- Footer -->
     <footer class="py-8 border-t border-white/5 bg-slate-950">
-        <div class="container mx-auto px-6 text-center text-slate-500 text-sm">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm gap-4">
             <p>&copy; 2024 Varshika Jain. All rights reserved.</p>
-            <p class="mt-2 text-xs">Built with creativity & code.</p>
+            <div class="flex gap-6">
+                <a href="#" class="hover:text-cyan-400 transition-colors">Twitter</a>
+                <a href="#" class="hover:text-cyan-400 transition-colors">GitHub</a>
+                <a href="#" class="hover:text-cyan-400 transition-colors">Instagram</a>
+            </div>
         </div>
     </footer>
 
@@ -392,7 +568,7 @@
         // Navbar Scroll Effect
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
+            if (window.scrollY > 20) {
                 navbar.classList.add('nav-glass', 'py-4');
                 navbar.classList.remove('py-6');
             } else {
@@ -401,7 +577,7 @@
             }
         });
 
-        // Mobile Menu Toggle
+        // Mobile Menu
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const closeMenuBtn = document.getElementById('close-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -419,9 +595,45 @@
             link.addEventListener('click', toggleMenu);
         });
 
-        // Scroll Reveal Animation (Simple version without external lib)
+        // Typing Animation
+        const typingElement = document.getElementById('typing-text');
+        const phrases = ['Data Scientist', 'Web Developer', 'Tech Entrepreneur', 'Problem Solver'];
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let typingDelay = 100;
+
+        function type() {
+            const currentPhrase = phrases[phraseIndex];
+            
+            if (isDeleting) {
+                typingElement.textContent = currentPhrase.substring(0, charIndex - 1);
+                charIndex--;
+                typingDelay = 50;
+            } else {
+                typingElement.textContent = currentPhrase.substring(0, charIndex + 1);
+                charIndex++;
+                typingDelay = 100;
+            }
+
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                isDeleting = true;
+                typingDelay = 2000; // Pause at end
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                typingDelay = 500;
+            }
+
+            setTimeout(type, typingDelay);
+        }
+
+        document.addEventListener('DOMContentLoaded', type);
+
+        // Scroll Reveal Animation
         const observerOptions = {
-            threshold: 0.1
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
         };
 
         const observer = new IntersectionObserver((entries) => {
@@ -433,7 +645,6 @@
             });
         }, observerOptions);
 
-        // Add reveal classes to sections
         document.querySelectorAll('section > div').forEach(el => {
             el.classList.add('transition-all', 'duration-1000', 'opacity-0', 'translate-y-10');
             observer.observe(el);
