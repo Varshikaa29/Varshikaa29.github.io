@@ -1,653 +1,508 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Varshika Jain | Portfolio</title>
-    <!-- Tailwind CSS -->
+    <title>Varshika Jain | Aspiring Data Scientist</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
-                    },
-                    colors: {
-                        slate: {
-                            850: '#0f172a',
-                            900: '#020617',
-                            950: '#000000', // Darker base
-                        }
-                    },
-                    animation: {
-                        'blob': 'blob 10s infinite',
-                        'float': 'float 6s ease-in-out infinite',
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'gradient-x': 'gradient-x 15s ease infinite',
-                    },
-                    keyframes: {
-                        blob: {
-                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
-                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
-                        },
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-20px)' },
-                        },
-                        'gradient-x': {
-                            '0%, 100%': {
-                                'background-size': '200% 200%',
-                                'background-position': 'left center'
-                            },
-                            '50%': {
-                                'background-size': '200% 200%',
-                                'background-position': 'right center'
-                            },
-                        },
-                    }
-                }
-            }
-        }
-    </script>
-
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* Custom scrollbar */
+        :root {
+            --primary: #00f2fe;
+            --secondary: #4facfe;
+            --dark: #0a0b10;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--dark);
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
+        }
+
+        .nav-link {
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+            text-shadow: 0 0 8px rgba(0, 242, 254, 0.6);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        #data-canvas {
+            opacity: 0.6;
+        }
+
+        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #020617;
+            background: #0a0b10;
         }
         ::-webkit-scrollbar-thumb {
-            background: #475569;
+            background: #2d3748;
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #64748b;
-        }
-        
-        .glass-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-        }
-        
-        .glass-card:hover {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 20px rgba(6, 182, 212, 0.15);
-        }
-        
-        .nav-glass {
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .typing-cursor::after {
-            content: '|';
-            animation: blink 1s step-end infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        .gradient-text {
-            background: linear-gradient(to right, #22d3ee, #a855f7, #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-size: 200% auto;
-            animation: gradient-x 5s linear infinite;
+            background: var(--primary);
         }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-200 font-sans selection:bg-cyan-500 selection:text-slate-950 overflow-x-hidden">
+<body>
 
-    <!-- Background Effects -->
-    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-        <div class="absolute top-[-10%] left-[-10%] w-[40rem] h-[40rem] rounded-full bg-purple-600/10 blur-[120px] animate-blob"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-[35rem] h-[35rem] rounded-full bg-cyan-600/10 blur-[120px] animate-blob animation-delay-2000"></div>
-        <div class="absolute top-[40%] left-[40%] w-[30rem] h-[30rem] rounded-full bg-blue-600/10 blur-[120px] animate-blob animation-delay-4000"></div>
-        <!-- Grid Overlay -->
-        <div class="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:32px_32px]"></div>
-    </div>
+    <canvas id="data-canvas" class="hero-bg"></canvas>
 
     <!-- Navigation -->
-    <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 py-6">
-        <div class="container mx-auto px-6 flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold tracking-tighter hover:scale-105 transition-transform">
-                <span class="text-cyan-400">V</span>J<span class="text-purple-500">.</span>
-            </a>
-            
-            <!-- Desktop Menu -->
-            <div class="hidden md:flex items-center space-x-8">
-                <a href="#home" class="nav-link text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors">Home</a>
-                <a href="#about" class="nav-link text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors">About</a>
-                <a href="#projects" class="nav-link text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors">Projects</a>
-                <a href="#education" class="nav-link text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors">Education</a>
-                <a href="#contact" class="nav-link text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors">Contact</a>
+    <nav class="fixed top-0 w-full z-50 px-6 py-4 glass">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="text-xl font-bold mono">
+                <span class="text-blue-400">&lt;</span>Varshika<span class="text-blue-400">/&gt;</span>
             </div>
-
-            <a href="https://www.linkedin.com/in/varshika-jain-a81109329/" target="_blank" class="hidden md:flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 px-5 py-2.5 rounded-full text-sm font-medium transition-all group hover:border-cyan-500/50">
-                <i data-lucide="linkedin" class="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform"></i>
-                <span>Connect</span>
+            <div class="hidden md:flex space-x-8 text-sm font-medium">
+                <a href="#about" class="nav-link">About</a>
+                <a href="#skills" class="nav-link">Skills</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+            <a href="#contact" class="px-5 py-2 rounded-full border border-cyan-500 text-cyan-400 text-sm hover:bg-cyan-500 hover:text-white transition-all">
+                Let's Talk
             </a>
-
-            <!-- Mobile Menu Button -->
-            <button id="mobile-menu-btn" class="md:hidden text-slate-200 p-2 hover:bg-white/10 rounded-lg transition-colors">
-                <i data-lucide="menu"></i>
-            </button>
-        </div>
-
-        <!-- Mobile Menu Overlay -->
-        <div id="mobile-menu" class="fixed inset-0 bg-black/95 backdrop-blur-2xl z-40 transform translate-x-full transition-transform duration-300 md:hidden flex flex-col justify-center items-center space-y-8">
-            <button id="close-menu-btn" class="absolute top-6 right-6 text-slate-400 hover:text-white p-2">
-                <i data-lucide="x" class="w-8 h-8"></i>
-            </button>
-            <a href="#home" class="mobile-link text-2xl font-bold text-slate-300 hover:text-cyan-400">Home</a>
-            <a href="#about" class="mobile-link text-2xl font-bold text-slate-300 hover:text-cyan-400">About</a>
-            <a href="#projects" class="mobile-link text-2xl font-bold text-slate-300 hover:text-cyan-400">Projects</a>
-            <a href="#education" class="mobile-link text-2xl font-bold text-slate-300 hover:text-cyan-400">Education</a>
-            <a href="#contact" class="mobile-link text-2xl font-bold text-slate-300 hover:text-cyan-400">Contact</a>
         </div>
     </nav>
 
-    <main class="relative z-10">
-        <!-- Hero Section -->
-        <section id="home" class="min-h-screen flex items-center pt-20 relative">
-            <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-                <div class="space-y-8 order-2 md:order-1">
-                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/5 border border-cyan-500/20 text-cyan-400 text-sm font-mono hover:bg-cyan-500/10 transition-colors cursor-default">
-                        <span class="relative flex h-2 w-2">
-                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                          <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
-                        </span>
-                        <span>Available for opportunities</span>
-                    </div>
-                    
-                    <div class="space-y-4">
-                        <h1 class="text-5xl md:text-7xl font-bold leading-tight tracking-tight">
-                            Hi, I'm <br />
-                            <span class="gradient-text">Varshika Jain</span>
-                        </h1>
-                        <p class="text-xl md:text-2xl text-slate-400 font-light h-8">
-                            I am a <span id="typing-text" class="text-slate-200 font-medium typing-cursor"></span>
-                        </p>
-                    </div>
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center pt-20 px-6">
+        <div class="text-center max-w-4xl">
+            <div class="inline-block px-4 py-1 rounded-full glass border border-blue-500/30 text-blue-400 text-xs mb-6 mono animate-bounce">
+                IIT Madras | BS in Data Science
+            </div>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
+                Hi, I'm <span class="gradient-text">Varshika Jain</span>
+            </h1>
+            <div class="h-8 mb-8">
+                <p id="typewriter" class="text-xl md:text-2xl text-slate-400 mono"></p>
+            </div>
+            <p class="text-lg text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+                Turning chaotic datasets into compelling narratives. Specializing in Machine Learning, Statistical Analysis, and Python engineering.
+            </p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <a href="#projects" class="px-8 py-3 bg-blue-600 hover:bg-blue-500 rounded-lg font-semibold transition-all shadow-lg shadow-blue-600/20">
+                    Explore Projects
+                </a>
+                <a href="#about" class="px-8 py-3 glass rounded-lg font-semibold hover:bg-white/5 transition-all">
+                    Learn More
+                </a>
+            </div>
+        </div>
+    </section>
 
-                    <p class="text-lg text-slate-400 max-w-lg leading-relaxed">
-                        Transforming complex data into actionable insights and building web experiences that matter. 
-                    </p>
-                    
-                    <div class="flex flex-wrap gap-4 pt-4">
-                        <a href="#contact" class="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold rounded-full transition-all shadow-lg shadow-cyan-500/25 flex items-center gap-2 hover:-translate-y-1">
-                            <i data-lucide="mail" class="w-4 h-4"></i>
-                            Get in Touch
-                        </a>
-                        <a href="#projects" class="px-8 py-4 glass-card hover:bg-white/10 rounded-full font-medium transition-all flex items-center gap-2 hover:-translate-y-1 group">
-                            View Work
-                            <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
-                        </a>
+    <!-- About Section -->
+    <section id="about" class="py-24 px-6 relative">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="relative">
+                    <div class="aspect-square rounded-2xl glass border border-white/10 flex items-center justify-center p-8 overflow-hidden group">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-blue-500/10 to-transparent"></div>
+                        <div class="z-10 text-center">
+                            <!-- Placeholder for actual image -->
+                            <div class="w-48 h-48 bg-slate-800 rounded-full mx-auto mb-6 flex items-center justify-center border-4 border-blue-500/30 shadow-2xl">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-24 h-24 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                            </div>
+                            <p class="mono text-sm text-blue-400">Varshika_Jain.py</p>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="order-1 md:order-2 flex justify-center animate-float perspective-1000">
-                    <div class="relative w-72 h-72 md:w-96 md:h-96 group">
-                        <!-- Holographic Card Effect -->
-                        <div class="absolute inset-0 bg-gradient-to-tr from-cyan-500 to-purple-600 rounded-2xl blur-[40px] opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
-                        <div class="relative z-10 w-full h-full glass-card rounded-2xl border border-white/10 p-8 flex flex-col justify-between transform transition-all duration-500 group-hover:rotate-y-12 group-hover:rotate-x-12 preserve-3d">
-                            
-                            <!-- Card Header -->
-                            <div class="flex justify-between items-center border-b border-white/5 pb-4">
-                                <div class="flex gap-2">
-                                    <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
-                                    <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
-                                    <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
-                                </div>
-                                <div class="text-xs font-mono text-slate-500">developer.py</div>
-                            </div>
-
-                            <!-- Card Content -->
-                            <div class="font-mono text-sm space-y-3 pt-4">
-                                <div class="flex">
-                                    <span class="text-slate-600 w-8 text-right mr-4 select-none">1</span>
-                                    <span class="text-purple-400">def</span> <span class="text-blue-400">innovate</span>():
-                                </div>
-                                <div class="flex">
-                                    <span class="text-slate-600 w-8 text-right mr-4 select-none">2</span>
-                                    <span class="text-slate-400 ml-4">skills = [</span>
-                                </div>
-                                <div class="flex">
-                                    <span class="text-slate-600 w-8 text-right mr-4 select-none">3</span>
-                                    <span class="text-green-400 ml-8">'Data Science'</span><span class="text-slate-400">,</span>
-                                </div>
-                                <div class="flex">
-                                    <span class="text-slate-600 w-8 text-right mr-4 select-none">4</span>
-                                    <span class="text-green-400 ml-8">'Full Stack'</span><span class="text-slate-400">,</span>
-                                </div>
-                                <div class="flex">
-                                    <span class="text-slate-600 w-8 text-right mr-4 select-none">5</span>
-                                    <span class="text-green-400 ml-8">'Entrepreneurship'</span>
-                                </div>
-                                <div class="flex">
-                                    <span class="text-slate-600 w-8 text-right mr-4 select-none">6</span>
-                                    <span class="text-slate-400 ml-4">]</span>
-                                </div>
-                                <div class="flex">
-                                    <span class="text-slate-600 w-8 text-right mr-4 select-none">7</span>
-                                    <span class="text-purple-400 ml-4">return</span> <span class="text-cyan-400">impact</span>
-                                </div>
-                            </div>
-                            
-                            <div class="mt-4 pt-4 border-t border-white/5 flex justify-between items-center">
-                                <span class="text-xs text-slate-500">Ready to compile...</span>
-                                <i data-lucide="play-circle" class="w-5 h-5 text-green-500 animate-pulse"></i>
-                            </div>
+                <div>
+                    <h2 class="text-3xl font-bold mb-6">About <span class="text-blue-400 underline decoration-2 underline-offset-8">Me</span></h2>
+                    <p class="text-slate-400 text-lg mb-6 leading-relaxed">
+                        Currently pursuing a degree in <span class="text-white font-semibold">Data Science and Applications at IIT Madras</span>, I'm passionate about uncovering the "why" behind the numbers.
+                    </p>
+                    <p class="text-slate-400 text-lg mb-8 leading-relaxed">
+                        I bridge the gap between complex algorithms and business value. Whether it's building predictive models or creating insightful visualizations, I focus on delivering data-driven solutions that actually matter.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="p-4 glass rounded-xl border-l-4 border-l-blue-500">
+                            <h4 class="font-bold text-xl mb-1 text-white">IIT Madras</h4>
+                            <p class="text-xs text-slate-500 mono">EDUCATION</p>
+                        </div>
+                        <div class="p-4 glass rounded-xl border-l-4 border-l-cyan-500">
+                            <h4 class="font-bold text-xl mb-1 text-white">Aspiring DS</h4>
+                            <p class="text-xs text-slate-500 mono">GOAL</p>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-24 px-6 bg-white/[0.02]">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold mb-12 text-center">My <span class="text-blue-400">Tech Stack</span></h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <!-- Skill 1 -->
+                <div class="skill-card glass p-6 rounded-2xl transition-all duration-300">
+                    <div class="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-blue-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-4-4 1.41-1.41L11 14.17l5.59-5.59L18 10l-7 7z"/></svg>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Python</h3>
+                    <p class="text-sm text-slate-500">Pandas, NumPy, Scikit-learn</p>
+                </div>
+                <!-- Skill 2 -->
+                <div class="skill-card glass p-6 rounded-2xl transition-all duration-300">
+                    <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-purple-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">SQL</h3>
+                    <p class="text-sm text-slate-500">Query Optimization, ETL</p>
+                </div>
+                <!-- Skill 3 -->
+                <div class="skill-card glass p-6 rounded-2xl transition-all duration-300">
+                    <div class="w-12 h-12 bg-cyan-500/20 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Viz</h3>
+                    <p class="text-sm text-slate-500">Tableau, PowerBI, Matplotlib</p>
+                </div>
+                <!-- Skill 4 -->
+                <div class="skill-card glass p-6 rounded-2xl transition-all duration-300">
+                    <div class="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-red-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">ML</h3>
+                    <p class="text-sm text-slate-500">Neural Networks, Regression</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-24 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+                <div>
+                    <h2 class="text-3xl font-bold mb-4 underline decoration-blue-500 decoration-4 underline-offset-8 italic">Featured Work</h2>
+                    <p class="text-slate-400">Real-world applications of data science techniques.</p>
+                </div>
+                <div class="mt-6 md:mt-0">
+                    <a href="#" class="text-blue-400 hover:text-blue-300 mono text-sm flex items-center">
+                        View all on GitHub 
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Project 1 -->
+                <div class="group relative glass rounded-3xl overflow-hidden">
+                    <div class="h-64 bg-slate-800 flex items-center justify-center p-4">
+                        <!-- Replace with real screenshot later -->
+                        <div class="text-center">
+                            <svg class="w-20 h-20 text-blue-500/40 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                            <p class="mt-4 text-slate-500 mono text-sm italic">Sentiment Analysis Model</p>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <div class="flex gap-2 mb-4">
+                            <span class="text-[10px] px-2 py-1 glass rounded text-blue-400 font-bold uppercase tracking-widest">NLP</span>
+                            <span class="text-[10px] px-2 py-1 glass rounded text-purple-400 font-bold uppercase tracking-widest">Python</span>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3 group-hover:text-blue-400 transition-colors">Social Sentiment Tracker</h3>
+                        <p class="text-slate-400 mb-6 line-clamp-2">A deep learning model analyzing thousands of tweets to predict market sentiment in real-time.</p>
+                        <div class="flex gap-4">
+                            <button class="flex items-center text-sm font-semibold text-white/80 hover:text-white">
+                                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                                Code
+                            </button>
+                            <button class="flex items-center text-sm font-semibold text-white/80 hover:text-white">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                Demo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="group relative glass rounded-3xl overflow-hidden">
+                    <div class="h-64 bg-slate-800 flex items-center justify-center p-4">
+                        <div class="text-center">
+                            <svg class="w-20 h-20 text-cyan-500/40 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.407 2.67 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.407-2.67-1M12 12V11"/></svg>
+                            <p class="mt-4 text-slate-500 mono text-sm italic">Financial Predictive Analysis</p>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <div class="flex gap-2 mb-4">
+                            <span class="text-[10px] px-2 py-1 glass rounded text-cyan-400 font-bold uppercase tracking-widest">Analytics</span>
+                            <span class="text-[10px] px-2 py-1 glass rounded text-blue-400 font-bold uppercase tracking-widest">SQL</span>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3 group-hover:text-cyan-400 transition-colors">Churn Prediction Engine</h3>
+                        <p class="text-slate-400 mb-6 line-clamp-2">End-to-end pipeline from SQL extraction to XGBoost modeling for predicting customer churn with 89% accuracy.</p>
+                        <div class="flex gap-4">
+                            <button class="flex items-center text-sm font-semibold text-white/80 hover:text-white">
+                                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                                Code
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 px-6 relative">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-8">Ready to <span class="gradient-text">collaborate?</span></h2>
+            <p class="text-slate-400 text-lg mb-12">I'm currently looking for internships and entry-level opportunities in Data Science. Let's build something amazing together.</p>
             
-            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-slate-500 cursor-pointer hover:text-cyan-400 transition-colors" onclick="document.getElementById('about').scrollIntoView({behavior: 'smooth'})">
-                <i data-lucide="chevron-down" class="w-8 h-8"></i>
-            </div>
-        </section>
-
-        <!-- About Section -->
-        <section id="about" class="py-24 relative">
-            <div class="container mx-auto px-6">
-                <div class="glass-card rounded-3xl p-8 md:p-12 border border-white/5 bg-slate-900/40">
-                    <div class="flex flex-col md:flex-row gap-12 items-center">
-                        <div class="md:w-1/2 space-y-6">
-                            <h2 class="text-3xl font-bold flex items-center gap-3">
-                                <span class="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400">
-                                    <i data-lucide="user"></i>
-                                </span>
-                                About Me
-                            </h2>
-                            <p class="text-slate-300 leading-relaxed text-lg">
-                                I am a forward-thinking student and tech enthusiast bridging the gap between <span class="text-cyan-400 font-semibold">Data Science</span> and <span class="text-purple-400 font-semibold">Web Development</span>. 
-                            </p>
-                            <p class="text-slate-400 leading-relaxed">
-                                Driven by the <span class="text-yellow-400 font-semibold">entrepreneurial spirit</span>, I don't just write code—I build solutions. My passion lies in leveraging data to solve real-world problems and creating intuitive digital products that users love.
-                            </p>
-                            
-                            <div class="flex gap-4 pt-4">
-                                <div class="px-4 py-2 rounded-lg bg-slate-800/50 border border-slate-700 text-sm text-slate-300 flex items-center gap-2">
-                                    <i data-lucide="map-pin" class="w-4 h-4 text-red-400"></i> Based in India
-                                </div>
-                                <div class="px-4 py-2 rounded-lg bg-slate-800/50 border border-slate-700 text-sm text-slate-300 flex items-center gap-2">
-                                    <i data-lucide="coffee" class="w-4 h-4 text-yellow-400"></i> Open to Coffee
-                                </div>
-                            </div>
-                        </div>
+            <div class="glass p-8 md:p-12 rounded-3xl">
+                <div class="grid md:grid-cols-2 gap-8 text-left">
+                    <div>
+                        <h4 class="text-sm font-bold text-blue-400 mono mb-4 uppercase">Contact Details</h4>
+                        <p class="text-xl font-semibold mb-2">varshika.jain@iitm.ac.in</p>
+                        <p class="text-slate-500 mb-6">IIT Madras, Chennai, India</p>
                         
-                        <div class="md:w-1/2 grid grid-cols-2 gap-4">
-                            <div class="glass-card p-6 rounded-2xl text-center hover:-translate-y-2 transition-transform duration-300 border-t-2 border-t-cyan-500/50">
-                                <div class="w-12 h-12 mx-auto bg-cyan-500/10 rounded-full flex items-center justify-center text-cyan-400 mb-3">
-                                    <i data-lucide="code-2"></i>
-                                </div>
-                                <h3 class="font-bold text-xl text-white">Developer</h3>
-                                <p class="text-sm text-slate-500 mt-1">Clean & Modern Code</p>
-                            </div>
-                            <div class="glass-card p-6 rounded-2xl text-center hover:-translate-y-2 transition-transform duration-300 border-t-2 border-t-purple-500/50 mt-8">
-                                <div class="w-12 h-12 mx-auto bg-purple-500/10 rounded-full flex items-center justify-center text-purple-400 mb-3">
-                                    <i data-lucide="database"></i>
-                                </div>
-                                <h3 class="font-bold text-xl text-white">Analyst</h3>
-                                <p class="text-sm text-slate-500 mt-1">Data Driven Insights</p>
-                            </div>
-                            <div class="glass-card p-6 rounded-2xl text-center hover:-translate-y-2 transition-transform duration-300 border-t-2 border-t-blue-500/50">
-                                <div class="w-12 h-12 mx-auto bg-blue-500/10 rounded-full flex items-center justify-center text-blue-400 mb-3">
-                                    <i data-lucide="rocket"></i>
-                                </div>
-                                <h3 class="font-bold text-xl text-white">Founder</h3>
-                                <p class="text-sm text-slate-500 mt-1">Startup Mindset</p>
-                            </div>
-                            <div class="glass-card p-6 rounded-2xl text-center hover:-translate-y-2 transition-transform duration-300 border-t-2 border-t-green-500/50 mt-8">
-                                <div class="w-12 h-12 mx-auto bg-green-500/10 rounded-full flex items-center justify-center text-green-400 mb-3">
-                                    <i data-lucide="users"></i>
-                                </div>
-                                <h3 class="font-bold text-xl text-white">Leader</h3>
-                                <p class="text-sm text-slate-500 mt-1">Community Building</p>
-                            </div>
+                        <div class="flex space-x-4">
+                            <a href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:text-blue-400 transition-colors">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:text-white transition-colors">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12"/></svg>
+                            </a>
                         </div>
+                    </div>
+                    <div>
+                        <form onsubmit="event.preventDefault();" class="space-y-4">
+                            <input type="text" placeholder="Name" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 transition-all">
+                            <input type="email" placeholder="Email" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 transition-all">
+                            <textarea placeholder="Your Message" rows="4" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 transition-all"></textarea>
+                            <button class="w-full py-4 bg-blue-600 rounded-lg font-bold hover:bg-blue-500 transition-all">Send Message</button>
+                        </form>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <!-- Projects Section (Replaces Fake Experience) -->
-        <section id="projects" class="py-24">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16 space-y-4">
-                    <h2 class="text-3xl md:text-5xl font-bold flex items-center justify-center gap-3">
-                        <span class="gradient-text">Featured Projects</span>
-                    </h2>
-                    <p class="text-slate-400 max-w-2xl mx-auto">
-                        A showcase of my technical projects, ranging from data analysis models to full-stack web applications.
-                    </p>
-                </div>
-
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Project 1 -->
-                    <div class="glass-card rounded-2xl overflow-hidden hover:shadow-cyan-500/10 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group">
-                        <div class="h-48 bg-gradient-to-br from-slate-800 to-slate-900 relative p-6 flex items-center justify-center overflow-hidden">
-                            <div class="absolute inset-0 bg-grid-white/[0.05]"></div>
-                            <i data-lucide="bar-chart-2" class="w-16 h-16 text-cyan-500/50 group-hover:scale-110 transition-transform duration-500"></i>
-                            <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 to-blue-500"></div>
-                        </div>
-                        <div class="p-6 space-y-4">
-                            <h3 class="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">Predictive Analytics Dashboard</h3>
-                            <p class="text-slate-400 text-sm line-clamp-3">
-                                A comprehensive data dashboard that visualizes complex datasets and predicts future trends using machine learning algorithms. Built with Python and Streamlit.
-                            </p>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-2 py-1 bg-slate-800 text-xs rounded text-cyan-300">Python</span>
-                                <span class="px-2 py-1 bg-slate-800 text-xs rounded text-cyan-300">ML</span>
-                                <span class="px-2 py-1 bg-slate-800 text-xs rounded text-cyan-300">Data Viz</span>
-                            </div>
-                            <div class="pt-4 flex justify-between items-center">
-                                <a href="#" class="text-sm font-medium text-slate-300 hover:text-white flex items-center gap-1">
-                                    <i data-lucide="github" class="w-4 h-4"></i> Code
-                                </a>
-                                <a href="#" class="text-sm font-medium text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
-                                    Demo <i data-lucide="external-link" class="w-4 h-4"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Project 2 -->
-                    <div class="glass-card rounded-2xl overflow-hidden hover:shadow-purple-500/10 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group">
-                        <div class="h-48 bg-gradient-to-br from-slate-800 to-slate-900 relative p-6 flex items-center justify-center overflow-hidden">
-                            <div class="absolute inset-0 bg-grid-white/[0.05]"></div>
-                            <i data-lucide="shopping-bag" class="w-16 h-16 text-purple-500/50 group-hover:scale-110 transition-transform duration-500"></i>
-                            <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-purple-400 to-pink-500"></div>
-                        </div>
-                        <div class="p-6 space-y-4">
-                            <h3 class="text-xl font-bold text-white group-hover:text-purple-400 transition-colors">E-Commerce Platform</h3>
-                            <p class="text-slate-400 text-sm line-clamp-3">
-                                A modern, responsive e-commerce web application with cart functionality, user authentication, and payment gateway integration.
-                            </p>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-2 py-1 bg-slate-800 text-xs rounded text-purple-300">React</span>
-                                <span class="px-2 py-1 bg-slate-800 text-xs rounded text-purple-300">Node.js</span>
-                                <span class="px-2 py-1 bg-slate-800 text-xs rounded text-purple-300">MongoDB</span>
-                            </div>
-                            <div class="pt-4 flex justify-between items-center">
-                                <a href="#" class="text-sm font-medium text-slate-300 hover:text-white flex items-center gap-1">
-                                    <i data-lucide="github" class="w-4 h-4"></i> Code
-                                </a>
-                                <a href="#" class="text-sm font-medium text-purple-400 hover:text-purple-300 flex items-center gap-1">
-                                    Demo <i data-lucide="external-link" class="w-4 h-4"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Project 3 -->
-                    <div class="glass-card rounded-2xl overflow-hidden hover:shadow-blue-500/10 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group">
-                        <div class="h-48 bg-gradient-to-br from-slate-800 to-slate-900 relative p-6 flex items-center justify-center overflow-hidden">
-                            <div class="absolute inset-0 bg-grid-white/[0.05]"></div>
-                            <i data-lucide="bot" class="w-16 h-16 text-blue-500/50 group-hover:scale-110 transition-transform duration-500"></i>
-                            <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-cyan-500"></div>
-                        </div>
-                        <div class="p-6 space-y-4">
-                            <h3 class="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">AI Chat Assistant</h3>
-                            <p class="text-slate-400 text-sm line-clamp-3">
-                                An intelligent chatbot application capable of answering queries and assisting with scheduling, powered by NLP techniques.
-                            </p>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-2 py-1 bg-slate-800 text-xs rounded text-blue-300">Python</span>
-                                <span class="px-2 py-1 bg-slate-800 text-xs rounded text-blue-300">NLP</span>
-                                <span class="px-2 py-1 bg-slate-800 text-xs rounded text-blue-300">API</span>
-                            </div>
-                            <div class="pt-4 flex justify-between items-center">
-                                <a href="#" class="text-sm font-medium text-slate-300 hover:text-white flex items-center gap-1">
-                                    <i data-lucide="github" class="w-4 h-4"></i> Code
-                                </a>
-                                <a href="#" class="text-sm font-medium text-blue-400 hover:text-blue-300 flex items-center gap-1">
-                                    Demo <i data-lucide="external-link" class="w-4 h-4"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Education Section -->
-        <section id="education" class="py-24 bg-slate-900/30">
-            <div class="container mx-auto px-6 max-w-4xl">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl font-bold mb-4 flex items-center justify-center gap-3">
-                        <i data-lucide="graduation-cap" class="text-pink-400"></i>
-                        Education
-                    </h2>
-                </div>
-
-                <div class="relative border-l border-slate-700 ml-3 md:ml-6 space-y-12">
-                    <!-- Education Item -->
-                    <div class="relative pl-8 md:pl-12">
-                        <div class="absolute -left-[9px] md:-left-[11px] top-1 w-5 h-5 md:w-6 md:h-6 rounded-full bg-slate-900 border-4 border-pink-500"></div>
-                        <div class="glass-card p-6 md:p-8 rounded-2xl hover:bg-white/5 transition-all">
-                            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-2">
-                                <h3 class="text-xl md:text-2xl font-bold text-white">Bachelor's Degree</h3>
-                                <span class="px-3 py-1 text-xs font-mono rounded-full bg-pink-500/10 border border-pink-500/20 text-pink-400">Present</span>
-                            </div>
-                            <h4 class="text-lg text-pink-400 mb-2">Computer Science & Data Analytics</h4>
-                            <p class="text-slate-400">
-                                Focusing on advanced algorithms, statistical modelling, and software engineering principles. Active member of technical clubs and student societies.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Skills Section -->
-        <section id="skills" class="py-24">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl font-bold mb-4 flex items-center justify-center gap-3">
-                        <i data-lucide="cpu" class="text-cyan-400"></i>
-                        Tech Stack
-                    </h2>
-                    <p class="text-slate-400">My arsenal of tools and technologies.</p>
-                </div>
-
-                <div class="grid md:grid-cols-3 gap-8">
-                    <!-- Data Science -->
-                    <div class="glass-card p-6 rounded-2xl hover:bg-white/5 transition-all group">
-                        <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 mb-6 group-hover:scale-110 transition-transform">
-                            <i data-lucide="bar-chart-3" class="w-6 h-6"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-4 text-white">Data Science</h3>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">Python</span>
-                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">Pandas</span>
-                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">NumPy</span>
-                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">TensorFlow</span>
-                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">SQL</span>
-                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">Tableau</span>
-                        </div>
-                    </div>
-
-                    <!-- Web Dev -->
-                    <div class="glass-card p-6 rounded-2xl hover:bg-white/5 transition-all group">
-                        <div class="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 mb-6 group-hover:scale-110 transition-transform">
-                            <i data-lucide="globe" class="w-6 h-6"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-4 text-white">Web Development</h3>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">React</span>
-                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">JavaScript</span>
-                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">Tailwind CSS</span>
-                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">Node.js</span>
-                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">HTML5/CSS3</span>
-                        </div>
-                    </div>
-
-                    <!-- Tools/Others -->
-                    <div class="glass-card p-6 rounded-2xl hover:bg-white/5 transition-all group">
-                        <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400 mb-6 group-hover:scale-110 transition-transform">
-                            <i data-lucide="terminal" class="w-6 h-6"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-4 text-white">Tools & Workflow</h3>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">Git & GitHub</span>
-                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">VS Code</span>
-                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">Jupyter</span>
-                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">Figma</span>
-                            <span class="px-3 py-1.5 text-xs bg-slate-800 rounded-md text-slate-300 border border-slate-700">Canva</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="py-24">
-            <div class="container mx-auto px-6 max-w-4xl">
-                <div class="glass-card rounded-3xl p-8 md:p-16 text-center border border-white/10 relative overflow-hidden group">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500"></div>
-                    <!-- Background Shine -->
-                    <div class="absolute inset-0 bg-gradient-to-tr from-cyan-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
-                    
-                    <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white">Let's Build Something <span class="text-cyan-400">Amazing</span></h2>
-                    <p class="text-slate-400 mb-10 max-w-2xl mx-auto text-lg">
-                        I'm currently looking for new opportunities. Whether you have a question, a project idea, or just want to say hi, my inbox is always open.
-                    </p>
-                    
-                    <div class="flex flex-col md:flex-row justify-center gap-6">
-                        <a href="mailto:contact@varshika.com" class="flex items-center justify-center gap-3 px-8 py-4 bg-white text-slate-950 font-bold rounded-full hover:bg-slate-200 transition-colors shadow-lg shadow-white/10 hover:shadow-white/20">
-                            <i data-lucide="mail" class="w-5 h-5"></i>
-                            Say Hello
-                        </a>
-                        <a href="https://www.linkedin.com/in/varshika-jain-a81109329/" target="_blank" class="flex items-center justify-center gap-3 px-8 py-4 bg-transparent border border-white/20 text-white font-bold rounded-full hover:bg-white/10 transition-colors">
-                            <i data-lucide="linkedin" class="w-5 h-5"></i>
-                            LinkedIn Profile
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer class="py-8 border-t border-white/5 bg-slate-950">
-        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm gap-4">
-            <p>&copy; 2024 Varshika Jain. All rights reserved.</p>
-            <div class="flex gap-6">
-                <a href="#" class="hover:text-cyan-400 transition-colors">Twitter</a>
-                <a href="#" class="hover:text-cyan-400 transition-colors">GitHub</a>
-                <a href="#" class="hover:text-cyan-400 transition-colors">Instagram</a>
+    <footer class="py-12 border-t border-white/5 text-center text-slate-500 text-sm">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
+            <p class="mono">© 2026 Varshika Jain. Crafted with Code & Data.</p>
+            <div class="flex space-x-6 mt-4 md:mt-0">
+                <a href="#" class="hover:text-blue-400">Privacy Policy</a>
+                <a href="#" class="hover:text-blue-400">Terms of Use</a>
             </div>
         </div>
     </footer>
 
-    <!-- Scripts -->
     <script>
-        // Initialize Icons
-        lucide.createIcons();
+        // Data Particle Background
+        const canvas = document.getElementById('data-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null, radius: 150 };
 
-        // Navbar Scroll Effect
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 20) {
-                navbar.classList.add('nav-glass', 'py-4');
-                navbar.classList.remove('py-6');
-            } else {
-                navbar.classList.remove('nav-glass', 'py-4');
-                navbar.classList.add('py-6');
-            }
-        });
-
-        // Mobile Menu
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const closeMenuBtn = document.getElementById('close-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const mobileLinks = document.querySelectorAll('.mobile-link');
-
-        function toggleMenu() {
-            mobileMenu.classList.toggle('translate-x-full');
-            document.body.classList.toggle('overflow-hidden');
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         }
 
-        mobileMenuBtn.addEventListener('click', toggleMenu);
-        closeMenuBtn.addEventListener('click', toggleMenu);
-
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', toggleMenu);
+        window.addEventListener('resize', resize);
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.x;
+            mouse.y = e.y;
         });
 
-        // Typing Animation
-        const typingElement = document.getElementById('typing-text');
-        const phrases = ['Data Scientist', 'Web Developer', 'Tech Entrepreneur', 'Problem Solver'];
-        let phraseIndex = 0;
-        let charIndex = 0;
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.density = (Math.random() * 30) + 1;
+                this.color = '#4facfe';
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+            }
+
+            update() {
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                let forceDirectionX = dx / distance;
+                let forceDirectionY = dy / distance;
+                let maxDistance = mouse.radius;
+                let force = (maxDistance - distance) / maxDistance;
+                let directionX = forceDirectionX * force * this.density;
+                let directionY = forceDirectionY * force * this.density;
+
+                if (distance < mouse.radius) {
+                    this.x -= directionX;
+                    this.y -= directionY;
+                    this.color = '#00f2fe';
+                } else {
+                    if (this.x !== this.baseX) {
+                        let dx = this.x - this.baseX;
+                        this.x -= dx / 10;
+                    }
+                    if (this.y !== this.baseY) {
+                        let dy = this.y - this.baseY;
+                        this.y -= dy / 10;
+                    }
+                    this.color = '#4facfe';
+                }
+            }
+        }
+
+        function init() {
+            particles = [];
+            const numberOfParticles = (canvas.width * canvas.height) / 8000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].draw();
+                particles[i].update();
+            }
+            connect();
+            requestAnimationFrame(animate);
+        }
+
+        function connect() {
+            let opacityValue = 1;
+            for (let a = 0; a < particles.length; a++) {
+                for (let b = a; b < particles.length; b++) {
+                    let dx = particles[a].x - particles[b].x;
+                    let dy = particles[a].y - particles[b].y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 100) {
+                        opacityValue = 1 - (distance / 100);
+                        ctx.strokeStyle = `rgba(79, 172, 254, ${opacityValue * 0.2})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[a].x, particles[a].y);
+                        ctx.lineTo(particles[b].x, particles[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        // Typewriter Effect
+        const phrases = ["Aspiring Data Scientist", "Machine Learning Enthusiast", "Problem Solver", "Visual Storyteller"];
+        let i = 0;
+        let j = 0;
+        let currentPhrase = [];
         let isDeleting = false;
-        let typingDelay = 100;
+        let isEnd = false;
 
-        function type() {
-            const currentPhrase = phrases[phraseIndex];
-            
-            if (isDeleting) {
-                typingElement.textContent = currentPhrase.substring(0, charIndex - 1);
-                charIndex--;
-                typingDelay = 50;
-            } else {
-                typingElement.textContent = currentPhrase.substring(0, charIndex + 1);
-                charIndex++;
-                typingDelay = 100;
+        function loop() {
+            isEnd = false;
+            const textDisplay = document.getElementById('typewriter');
+            textDisplay.innerHTML = currentPhrase.join('') + '<span class="animate-pulse">|</span>';
+
+            if (i < phrases.length) {
+                if (!isDeleting && j <= phrases[i].length) {
+                    currentPhrase.push(phrases[i][j]);
+                    j++;
+                }
+
+                if (isDeleting && j <= phrases[i].length) {
+                    currentPhrase.pop(phrases[i][j]);
+                    j--;
+                }
+
+                if (j == phrases[i].length) {
+                    isEnd = true;
+                    isDeleting = true;
+                }
+
+                if (isDeleting && j === 0) {
+                    currentPhrase = [];
+                    isDeleting = false;
+                    i++;
+                    if (i === phrases.length) {
+                        i = 0;
+                    }
+                }
             }
-
-            if (!isDeleting && charIndex === currentPhrase.length) {
-                isDeleting = true;
-                typingDelay = 2000; // Pause at end
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                phraseIndex = (phraseIndex + 1) % phrases.length;
-                typingDelay = 500;
-            }
-
-            setTimeout(type, typingDelay);
+            const spedUp = Math.random() * (80 - 50) + 50;
+            const normalSpeed = Math.random() * (300 - 200) + 200;
+            const time = isEnd ? 2000 : isDeleting ? spedUp : normalSpeed;
+            setTimeout(loop, time);
         }
 
-        document.addEventListener('DOMContentLoaded', type);
-
-        // Scroll Reveal Animation
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: "0px 0px -50px 0px"
+        // Start
+        window.onload = () => {
+            resize();
+            init();
+            animate();
+            loop();
         };
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('opacity-100', 'translate-y-0');
-                    entry.target.classList.remove('opacity-0', 'translate-y-10');
-                }
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
             });
-        }, observerOptions);
-
-        document.querySelectorAll('section > div').forEach(el => {
-            el.classList.add('transition-all', 'duration-1000', 'opacity-0', 'translate-y-10');
-            observer.observe(el);
         });
     </script>
 </body>
